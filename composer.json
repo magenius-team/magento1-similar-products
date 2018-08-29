@@ -1,0 +1,12 @@
+{
+    "name": "morozov-group/magento1-similar-products",
+    "description": "Magento 1.x Similar Products Extension",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Morozov Group",
+            "email": "tech@morozov.group"
+        }
+    ],
+    "require": {}
+}
