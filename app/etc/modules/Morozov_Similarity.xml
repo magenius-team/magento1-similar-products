@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Morozov_Similarity>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends></depends>
+        </Morozov_Similarity>
+    </modules>
+</config>
