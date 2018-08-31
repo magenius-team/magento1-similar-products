@@ -4,7 +4,9 @@ extends Mage_Core_Controller_Front_Action
 {
     public function indexAction()
     {
-        Mage::getResourceModel('morozov_similarity/catalog')->getProducts(3);
+        Mage::helper('morozov_similarity/api')->setAllProducts();
+
+        //Mage::getResourceModel('morozov_similarity/catalog')->getProducts(3);
         /*
         var_dump(Mage::helper('morozov_similarity')->getIsEnabled());
         var_dump(Mage::helper('morozov_similarity')->getUrl());

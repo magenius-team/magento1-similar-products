@@ -1,6 +1,9 @@
 <?php
 class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
 {
+    /**
+     * Service ==> Magento
+     */
     public function getUpSells($productId)
     {
         $productId = 3923; // dummy
@@ -20,9 +23,54 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
         return $ids;
     }
 
+    /**
+     * Service <== Magento
+     */
     public function setAllProducts()
     {
+        $collection = Mage::getResourceModel('catalog/product_collection')
+            ->addAttributeToSelect('visibility')
+            ->addAttributeToFilter('visibility', ['nin' => [
+                Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE
+            ]])
+        ;
+        $this->getDefaultHelper()->log(count($collection) . ' products');
+        $rows = [];
+        foreach($collection as $product) {
+            //Mage::log($product->getEntityId());
+            $attributeCode = 'media_gallery';
+            $attribute = $product->getResource()->getAttribute($attributeCode);
+            $backend = $attribute->getBackend();
+            $backend->afterLoad($product);
+            $g = $product->getData('media_gallery');
+            if (count($g['images'])) {
+                usort($g['images'], 'Morozov_Similarity_Helper_Api::cmpImages');
+                $image = $g['images'][0];
+                $url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'catalog/product' . $image['file'];
+                $rows[]= [$product->getEntityId(), $url];
+            }
+            /*
+            $mediaGallery = $product->getMediaGalleryImages();
+            if (count($mediaGallery)) {
+                //Mage::log($product->getEntityId());
+            }
+            */
+        }
 
+        $csvDir = Mage::getBaseDir('media') . DS . 'morozov_similarity';
+        if (!is_dir($csvDir)) {
+            mkdir($csvDir);
+        }
+        $f = fopen($csvDir . DS . 'products.csv', 'a+');
+        foreach($rows as $row) {
+            fputcsv($f, $row);
+        }
+        fclose($f);
+    }
+
+    public static function cmpImages($a, $b)
+    {
+        return (int)$a['position_default'] >= (int)$b['position_default'];
     }
 
     protected function getDefaultHelper()

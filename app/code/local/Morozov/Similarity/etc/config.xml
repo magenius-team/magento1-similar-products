@@ -100,4 +100,16 @@
             </adminhtml>
         </routers>
     </admin>
+    <crontab>
+        <jobs>
+            <morozov_similarity_set_products>
+                <schedule>
+                    <cron_expr>20 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>morozov_similarity/observer_cron::setProducts</model>
+                </run>
+            </morozov_similarity_set_products>
+        </jobs>
+    </crontab>
 </config>

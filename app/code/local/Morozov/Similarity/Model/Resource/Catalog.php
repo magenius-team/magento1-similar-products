@@ -3,6 +3,7 @@ class Morozov_Similarity_Model_Resource_Catalog
 {
     public function getProducts($storeId = 0)
     {
+        /*
         $resource = Mage::getSingleton('core/resource');
         $resource->getConnection('core_read');
 
@@ -47,5 +48,6 @@ SQL_PRODUCTS;
         echo '<pre>';
         var_dump($rows);
         echo '</pre>';
+        */
     }
 }

@@ -14,4 +14,9 @@ class Morozov_Similarity_Model_Observer
             ;
         }
     }
+
+    public function setProducts($observer)
+    {
+        Mage::helper('morozov_similarity/api')->setAllProducts();
+    }
 }
