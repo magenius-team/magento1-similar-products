@@ -1,5 +1,5 @@
 <?php
-class Morozov_Similarity_Model_Rewrite_CatalogProduct extends Mage_Catalog_Model_Product
+class Morozov_Similarity_Model_Rewrite_CatalogProduct extends Morozov_Similarity_Model_Product
 {
     // override parent
     public function getUpSellProductCollection()
