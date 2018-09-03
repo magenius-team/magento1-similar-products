@@ -1,5 +1,6 @@
 {
     "name": "morozov-group/magento1-similar-products",
+    "type":"magento-module",
     "description": "Magento 1.x Similar Products Extension",
     "license": "MIT",
     "authors": [
@@ -8,5 +9,7 @@
             "email": "tech@morozov.group"
         }
     ],
-    "require": {}
+    "require": {
+        "magento-hackathon/magento-composer-installer": "*"
+    }
 }
