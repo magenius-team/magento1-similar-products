@@ -84,7 +84,7 @@ class Morozov_Similarity_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function getProductsFileUrl()
     {
-        $url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . $this->getExportDir() . '/' . self::PRODUCTS_FILE;
+        $url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . self::EXPORT_DIR . '/' . self::PRODUCTS_FILE;
         return $url;
     }
 }
