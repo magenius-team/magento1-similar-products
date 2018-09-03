@@ -8,6 +8,7 @@ class Morozov_Similarity_Helper_Data extends Mage_Core_Helper_Abstract
     const PATH_KEY      = 'morozov_similarity/general/key';
     const PATH_EMAIL    = 'morozov_similarity/general/email';
     const PATH_PASSWORD = 'morozov_similarity/general/password';
+    const PATH_TIMEOUT  = 'morozov_similarity/general/timeout';
 
     const PATH_UPSELL_MAXCOUNT = 'morozov_similarity/upsell_options/upsell_max_count';
 
@@ -44,6 +45,11 @@ class Morozov_Similarity_Helper_Data extends Mage_Core_Helper_Abstract
         return Mage::getStoreConfig(self::PATH_PASSWORD);
     }
 
+    public function getTimeout()
+    {
+        return Mage::getStoreConfig(self::PATH_TIMEOUT);
+    }
+
     public function getUpSellMaxCount()
     {
         return (int)Mage::getStoreConfig(self::PATH_UPSELL_MAXCOUNT);
@@ -74,5 +80,11 @@ class Morozov_Similarity_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $file = $this->getExportDir() . DS . self::PRODUCTS_FILE;
         return $file;
+    }
+
+    public function getProductsFileUrl()
+    {
+        $url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . $this->getExportDir() . '/' . self::PRODUCTS_FILE;
+        return $url;
     }
 }

@@ -10,8 +10,10 @@
             <general>
                 <enabled>0</enabled>
                 <url><![CDATA[https://ss-similarity.apps.msk.morozov.cloud/api/view/]]></url>
+                <key>1234567</key>
                 <email>test@gmail.com</email>
                 <password>250504</password>
+                <timeout>100</timeout>
             </general>
             <upsell_options>
                 <upsell_max_count>10</upsell_max_count>
@@ -106,7 +108,7 @@
         <jobs>
             <morozov_similarity_set_products>
                 <schedule>
-                    <cron_expr>20 * * * *</cron_expr>
+                    <cron_expr>* * * * *</cron_expr>
                 </schedule>
                 <run>
                     <model>morozov_similarity/observer::setProducts</model>

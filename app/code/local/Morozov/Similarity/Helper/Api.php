@@ -26,10 +26,7 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
         return $ids;
     }
 
-    /**
-     * Service <== Magento
-     */
-    public function setAllProducts()
+    protected function collectProducts()
     {
         $collection = Mage::getResourceModel('catalog/product_collection')
             ->addAttributeToSelect('visibility')
@@ -37,7 +34,7 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
                 Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE
             ]])
         ;
-        $this->getDefaultHelper()->log('setAllProducts ' . count($collection) . ' products');
+        $this->getDefaultHelper()->log('Export ' . count($collection) . ' products');
         $rows = [];
         foreach($collection as $product) {
             //Mage::log($product->getEntityId());
@@ -62,13 +59,42 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
 
         $csvDir = $this->getDefaultHelper()->getExportDir();
         if (!is_dir($csvDir)) {
-            mkdir($csvDir);
+            if (!mkdir($csvDir)) {
+                throw new Exception('Failed to create export directory..');
+            }
         }
-        $f = fopen($this->getDefaultHelper()->getProductsFile(), 'a+');
+        if (!$f = fopen($this->getDefaultHelper()->getProductsFile(), 'a+')) {
+            throw new Exception('Failed to create export Products file..');
+        }
         foreach($rows as $row) {
             fputcsv($f, $row);
         }
         fclose($f);
+    }
+
+    /**
+     * Service <== Magento
+     */
+    public function setAllProducts()
+    {
+        $this->collectProducts();
+
+        //@TODO: send CSV file to service
+        $url = $this->getDefaultHelper()->getUrl() . 'api/reindex';
+        $client = new Zend_Http_Client($url, [
+            //'timeout' => (int)$this->getDefaultHelper()->getTimeout()
+        ]);
+        $data = [
+            'key'  => $this->getDefaultHelper()->getKey(),
+            'file' => $this->getDefaultHelper()->getProductsFileUrl()
+        ];
+        $client
+            ->setRawData(Zend_Json::encode($data))
+        ;
+        $response = $client->request('POST');
+        if ($response->getStatus() != 200) {
+            throw new Exception($url . ':  ' . $response->getMessage());
+        }
     }
 
     public static function cmpImages($a, $b)
