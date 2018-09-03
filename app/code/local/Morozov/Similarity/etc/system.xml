@@ -41,7 +41,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
-                            <comment><![CDATA[Comment.]]></comment>
+                            <comment><![CDATA[Service URL. Example:<br/> https://bragard-similarity.apps.msk.morozov.cloud/]]></comment>
                         </url>
                         <key translate="label comment">
                             <label>Security Key</label>
