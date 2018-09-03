@@ -9,7 +9,7 @@
         <morozov_similarity>
             <general>
                 <enabled>0</enabled>
-                <url><![CDATA[https://bragard-similarity.apps.msk.morozov.cloud/]]></url>
+                <url><![CDATA[]]></url>
                 <key>12b3gj746354ldyr</key>
                 <timeout>300</timeout>
             </general>
