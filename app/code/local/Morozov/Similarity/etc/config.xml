@@ -11,8 +11,6 @@
                 <enabled>0</enabled>
                 <url><![CDATA[https://bragard-similarity.apps.msk.morozov.cloud/]]></url>
                 <key>12b3gj746354ldyr</key>
-                <email>test@gmail.com</email>
-                <password>250504</password>
                 <timeout>100</timeout>
             </general>
             <upsell_options>
