@@ -115,6 +115,7 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
             'Content-Type: application/json',
             'Content-Length: ' . strlen($json)
         ]);
+        curl_setopt($ch, CURLOPT_NOSIGNAL, 1); // for linux
         curl_setopt($ch, CURLOPT_TIMEOUT_MS, (int)$this->getDefaultHelper()->getTimeout());
         $result = curl_exec($ch);
 
