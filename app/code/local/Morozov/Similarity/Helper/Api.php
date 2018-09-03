@@ -63,7 +63,7 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
                 throw new Exception('Failed to create export directory..');
             }
         }
-        if (!$f = fopen($this->getDefaultHelper()->getProductsFile(), 'a+')) {
+        if (!$f = fopen($this->getDefaultHelper()->getProductsFile(), 'w+')) {
             throw new Exception('Failed to create export Products file..');
         }
         foreach($rows as $row) {
@@ -88,6 +88,7 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
             'key'  => $this->getDefaultHelper()->getKey(),
             'file' => $this->getDefaultHelper()->getProductsFileUrl()
         ];
+        //Mage::log($data);
         $client
             ->setRawData(Zend_Json::encode($data))
         ;
