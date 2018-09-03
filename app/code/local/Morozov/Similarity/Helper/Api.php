@@ -6,9 +6,12 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
      */
     public function getUpSells($productId)
     {
-        $productId = 3923; // dummy
+        if (Mage::helper('morozov_similarity')->isDummy()) {
+            $productId = 3923; // dummy
+        }
 
-        $url = $this->getDefaultHelper()->getUrl() . $productId;
+        $url = $this->getDefaultHelper()->getUrl() . 'api/view/' . $productId;
+        //Mage::log($url);
         $response = file_get_contents($url);
         $response = str_replace("NaN", '"NaN"', $response);
         $items = Zend_Json::decode($response);
@@ -34,7 +37,7 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
                 Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE
             ]])
         ;
-        $this->getDefaultHelper()->log(count($collection) . ' products');
+        $this->getDefaultHelper()->log('setAllProducts ' . count($collection) . ' products');
         $rows = [];
         foreach($collection as $product) {
             //Mage::log($product->getEntityId());
@@ -57,11 +60,11 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
             */
         }
 
-        $csvDir = Mage::getBaseDir('media') . DS . 'morozov_similarity';
+        $csvDir = $this->getDefaultHelper()->getExportDir();
         if (!is_dir($csvDir)) {
             mkdir($csvDir);
         }
-        $f = fopen($csvDir . DS . 'products.csv', 'a+');
+        $f = fopen($this->getDefaultHelper()->getProductsFile(), 'a+');
         foreach($rows as $row) {
             fputcsv($f, $row);
         }

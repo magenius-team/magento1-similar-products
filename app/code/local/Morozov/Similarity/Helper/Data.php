@@ -5,10 +5,14 @@ class Morozov_Similarity_Helper_Data extends Mage_Core_Helper_Abstract
 
     const PATH_ENABLED  = 'morozov_similarity/general/enabled';
     const PATH_URL      = 'morozov_similarity/general/url';
+    const PATH_KEY      = 'morozov_similarity/general/key';
     const PATH_EMAIL    = 'morozov_similarity/general/email';
     const PATH_PASSWORD = 'morozov_similarity/general/password';
 
     const PATH_UPSELL_MAXCOUNT = 'morozov_similarity/upsell_options/upsell_max_count';
+
+    const EXPORT_DIR    = 'morozov_similarity';
+    const PRODUCTS_FILE = 'products.csv';
 
     public function log($message)
     {
@@ -23,6 +27,11 @@ class Morozov_Similarity_Helper_Data extends Mage_Core_Helper_Abstract
     public function getUrl()
     {
         return Mage::getStoreConfig(self::PATH_URL);
+    }
+
+    public function getKey()
+    {
+        return Mage::getStoreConfig(self::PATH_KEY);
     }
 
     public function getEmail()
@@ -42,7 +51,7 @@ class Morozov_Similarity_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function canUse()
     {
-        $res = $this->getIsEnabled() && $this->getUrl() && $this->getEmail() && $this->getPassword();
+        $res = $this->getIsEnabled() && $this->getUrl() && $this->getKey();
         $res = $res && (!Mage::app()->getStore()->isAdmin());
 
         //return false;
@@ -52,6 +61,18 @@ class Morozov_Similarity_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function isDummy()
     {
-        return true;
+        return false;
+    }
+
+    public function getExportDir()
+    {
+        $dir = Mage::getBaseDir('media') . DS . self::EXPORT_DIR;
+        return $dir;
+    }
+
+    public function getProductsFile()
+    {
+        $file = $this->getExportDir() . DS . self::PRODUCTS_FILE;
+        return $file;
     }
 }
