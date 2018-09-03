@@ -81,8 +81,10 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
 
         //@TODO: send CSV file to service
         $url = $this->getDefaultHelper()->getUrl() . 'api/reindex';
+
+        /*
         $client = new Zend_Http_Client($url, [
-            //'timeout' => (int)$this->getDefaultHelper()->getTimeout()
+            //'timeout' => (int)$this->getDefaultHelper()->getTimeout()  // in seconds only
         ]);
         $data = [
             'key'  => $this->getDefaultHelper()->getKey(),
@@ -96,6 +98,35 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
         if ($response->getStatus() != 200) {
             throw new Exception($url . ':  ' . $response->getMessage());
         }
+        */
+
+        $data = [
+            'key' => $this->getDefaultHelper()->getKey(),
+            'file' => $this->getDefaultHelper()->getProductsFileUrl()
+        ];
+        $json = Zend_Json::encode($data);
+        //Mage::log($json);
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($json)
+        ]);
+        curl_setopt($ch, CURLOPT_TIMEOUT_MS, (int)$this->getDefaultHelper()->getTimeout());
+        $result = curl_exec($ch);
+
+        $info = curl_getinfo($ch);
+        $error = curl_errno($ch); // 28 - timeout
+        if ($error == 28) {
+            throw new Exception($url . ' connection timeout..');
+        }
+        if ($info['http_code']) {
+            throw new Exception($url . ' error.. ' . $result);
+        }
+        curl_close($ch);
     }
 
     public static function cmpImages($a, $b)

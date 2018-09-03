@@ -4,21 +4,64 @@ extends Mage_Core_Controller_Front_Action
 {
     public function indexAction()
     {
-        var_dump(Mage::helper('morozov_similarity')->getTimeout());
+        Mage::helper('morozov_similarity/api')->setAllProducts();
 
-        $url = 'https://bragard-similarity.apps.msk.morozov.cloud/api/view/1845';
-        $client = new Zend_Http_Client($url, ['timeout' => 1]);
+        /*
+        //ini_set('always_populate_raw_post_data', '-1');
+        //$url = 'https://bragard-similarity.apps.msk.morozov.cloud/api/view/1845';
+        $url = 'http://bragardusa.l/morozov_similarity/index/test';
+        //$url = 'http://mail.ru';
+
+        $data = ['key' => '1233444', 'file' => 'http://mail.ru/file'];
+        $json = Zend_Json::encode($data);
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($json)
+        ]);
+        curl_setopt($ch, CURLOPT_TIMEOUT_MS, 1500);
+        $result = curl_exec($ch);
+
+
+        //echo '<pre>';
+        $info = curl_getinfo($ch);
+        $error = curl_errno($ch); // 28 -timeout
+        if ($error == 28) {
+            Mage::log('TIMEOUT');
+        }
+        Mage::log($error);
+        Mage::log($info);
+        //var_dump($info['http_code']);
+        //var_dump($info);
+        //var_dump($result);
+        Mage::log($result);
+        //echo '</pre>';
+
+        curl_close($ch);
+        exit;
+        //var_dump(Mage::helper('morozov_similarity')->getTimeout());
+        */
+
+        /*
+        //$url = 'https://bragard-similarity.apps.msk.morozov.cloud/api/view/1845';
+        $url = 'http://bragardusa.l/morozov_similarity/index/test';
+        $client = new Zend_Http_Client($url, ['timeout' => 10]);
         $data = [];
         $client
             ->setRawData(Zend_Json::encode($data))
         ;
-        $response = $client->request('GET');
-        echo '<pre>';
-        var_dump($response);  // 200
+        $response = $client->request('POST');
+        // echo '<pre>';
+        //var_dump($response);  // 200
         //var_dump($response->getMessage()); // OK
-
-        echo '</pre>';
+        //echo '</pre>';
         //Mage::helper('morozov_similarity/api')->setAllProducts();
+        */
+
 
         //Mage::getResourceModel('morozov_similarity/catalog')->getProducts(3);
         /*
@@ -29,6 +72,13 @@ extends Mage_Core_Controller_Front_Action
 
         var_dump(Mage::helper('morozov_similarity')->getUpSellMaxCount());
         */
+    }
+
+    public function testAction()
+    {
+        //ini_set('always_populate_raw_post_data', '-1');
+        //Mage::log($this->getRequest()->getRawBody());
+
     }
 }
 
