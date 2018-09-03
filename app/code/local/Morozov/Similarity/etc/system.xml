@@ -36,6 +36,7 @@
                         </enabled>
                         <email translate="label comment">
                             <label>Contact Email</label>
+                            <validate>required-entry</validate>
                             <frontend_type>text</frontend_type>
                             <sort_order>7</sort_order>
                             <show_in_default>1</show_in_default>
