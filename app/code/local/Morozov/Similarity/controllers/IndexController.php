@@ -9,7 +9,9 @@ extends Mage_Core_Controller_Front_Action
 
         //ini_set('always_populate_raw_post_data', '-1');
         //$url = 'https://bragard-similarity.apps.msk.morozov.cloud/api/view/1845';
-        $url = 'http://bragardusa.l/morozov_similarity/index/test';
+        $url = 'https://bragard-similarity.apps.msk.morozov.cloud/api/reindex';
+
+        //$url = 'http://bragardusa.l/morozov_similarity/index/test';
         //$url = 'http://mail.ru';
 
         $data = ['key' => '1233444', 'file' => 'http://mail.ru/file'];
@@ -23,6 +25,7 @@ extends Mage_Core_Controller_Front_Action
             'Content-Type: application/json',
             'Content-Length: ' . strlen($json)
         ]);
+        curl_setopt($ch, CURLOPT_NOSIGNAL, 1); // for linux
         curl_setopt($ch, CURLOPT_TIMEOUT_MS, 100);
         $result = curl_exec($ch);
 
