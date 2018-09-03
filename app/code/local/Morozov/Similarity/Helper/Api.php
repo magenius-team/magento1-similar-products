@@ -120,8 +120,9 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
 
         $info = curl_getinfo($ch);
         $error = curl_errno($ch); // 28 - timeout
-        if ($error == 28) {
-            throw new Exception($url . ' connection timeout..');
+        if ($error) {
+            $message = curl_error($ch);
+            throw new Exception($url . ' ' . $message);
         }
         if ($info['http_code'] != 200) {
             throw new Exception($url . ' error.. ' . $result);
