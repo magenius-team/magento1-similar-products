@@ -124,9 +124,12 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
             $message = curl_error($ch);
             throw new Exception($url . ' ' . $message);
         }
-        if ($info['http_code'] != 200) {
-            throw new Exception($url . ' error.. ' . $result);
-        }
+        //if ($info['http_code'] != 200) {
+        //    throw new Exception($url . ' error.. ' . $result);
+        //}
+        $this->getDefaultHelper()->log($info['http_code']);
+        $this->getDefaultHelper()->log($result);
+
         curl_close($ch);
     }
 

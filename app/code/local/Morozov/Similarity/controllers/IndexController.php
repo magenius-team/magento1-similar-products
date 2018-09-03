@@ -4,9 +4,9 @@ extends Mage_Core_Controller_Front_Action
 {
     public function indexAction()
     {
-        Mage::helper('morozov_similarity/api')->setAllProducts();
+        //Mage::helper('morozov_similarity/api')->setAllProducts();
+        //var_dump((int)Mage::helper('morozov_similarity')->getTimeout());
 
-        /*
         //ini_set('always_populate_raw_post_data', '-1');
         //$url = 'https://bragard-similarity.apps.msk.morozov.cloud/api/view/1845';
         $url = 'http://bragardusa.l/morozov_similarity/index/test';
@@ -23,17 +23,16 @@ extends Mage_Core_Controller_Front_Action
             'Content-Type: application/json',
             'Content-Length: ' . strlen($json)
         ]);
-        curl_setopt($ch, CURLOPT_TIMEOUT_MS, 1500);
+        curl_setopt($ch, CURLOPT_TIMEOUT_MS, 100);
         $result = curl_exec($ch);
 
 
         //echo '<pre>';
         $info = curl_getinfo($ch);
         $error = curl_errno($ch); // 28 -timeout
-        if ($error == 28) {
-            Mage::log('TIMEOUT');
-        }
+        $message = curl_error($ch);
         Mage::log($error);
+        Mage::log($message);
         Mage::log($info);
         //var_dump($info['http_code']);
         //var_dump($info);
@@ -44,7 +43,7 @@ extends Mage_Core_Controller_Front_Action
         curl_close($ch);
         exit;
         //var_dump(Mage::helper('morozov_similarity')->getTimeout());
-        */
+
 
         /*
         //$url = 'https://bragard-similarity.apps.msk.morozov.cloud/api/view/1845';
