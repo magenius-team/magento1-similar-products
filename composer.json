@@ -2,6 +2,7 @@
     "name": "morozov-group/magento1-similar-products",
     "type":"magento-module",
     "description": "Magento 1.x Similar Products Extension",
+    "version": "1.0.0",
     "license": "MIT",
     "authors": [
         {
