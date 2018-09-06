@@ -90,7 +90,6 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
             'key'  => $this->getDefaultHelper()->getKey(),
             'file' => $this->getDefaultHelper()->getProductsFileUrl()
         ];
-        //Mage::log($data);
         $client
             ->setRawData(Zend_Json::encode($data))
         ;
@@ -120,16 +119,14 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
         $result = curl_exec($ch);
 
         $info = curl_getinfo($ch);
-        $error = curl_errno($ch); // 28 - timeout
-        if ($error) {
-            $message = curl_error($ch);
-            throw new Exception($url . ' ' . $message);
-        }
-        //if ($info['http_code'] != 200) {
-        //    throw new Exception($url . ' error.. ' . $result);
-        //}
+        $error = curl_errno($ch);  // 28 - timeout
+        $this->getDefaultHelper()->log($url);
         $this->getDefaultHelper()->log($info['http_code']);
         $this->getDefaultHelper()->log($result);
+        if ($error) {
+            $message = curl_error($ch);
+            throw new Exception($error . ' ' . $message);
+        }
 
         curl_close($ch);
     }
