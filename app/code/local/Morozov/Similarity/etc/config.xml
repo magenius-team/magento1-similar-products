@@ -107,7 +107,7 @@
         <jobs>
             <morozov_similarity_set_products>
                 <schedule>
-                    <cron_expr>* * * * *</cron_expr>
+                    <cron_expr>10 * * * *</cron_expr>
                 </schedule>
                 <run>
                     <model>morozov_similarity/observer::setProducts</model>
