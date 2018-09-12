@@ -8,8 +8,8 @@ extends Mage_Core_Controller_Front_Action
         //var_dump((int)Mage::helper('morozov_similarity')->getTimeout());
 
         //ini_set('always_populate_raw_post_data', '-1');
-        //$url = 'https://bragard-similarity.apps.msk.morozov.cloud/api/view/1845';
-        $url = 'https://bragard-similarity.apps.msk.morozov.cloud/api/reindex';
+        $url = 'https://bragard-similarity.apps.msk.morozov.cloud/api/view/1845';
+        //$url = 'https://bragard-similarity.apps.msk.morozov.cloud/api/reindex';
 
         //$url = 'http://bragardusa.l/morozov_similarity/index/test';
         //$url = 'http://mail.ru';
@@ -78,9 +78,11 @@ extends Mage_Core_Controller_Front_Action
 
     public function testAction()
     {
-        //ini_set('always_populate_raw_post_data', '-1');
-        //Mage::log($this->getRequest()->getRawBody());
-
+        try {
+            Mage::helper('morozov_similarity/api')->setAllProducts();
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
     }
 }
 

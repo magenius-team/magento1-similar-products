@@ -34,6 +34,25 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
                 Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE
             ]])
         ;
+        $resource = Mage::getSingleton('core/resource');
+        $selectInStock = $resource->getConnection('core_read')->select();
+        $selectInStock
+            ->from(['si' => 'mage_cataloginventory_stock_item'], [
+                'product_id' => 'si.product_id',
+                'is_in_stock' => new Zend_Db_Expr('IF(SUM(is_in_stock)>0, 1, 0)')
+            ])
+            ->group('si.product_id')
+        ;
+
+        $collection->getSelect()
+            ->joinInner(
+                ['si' => $selectInStock],
+                'si.product_id = e.entity_id',
+                'is_in_stock'
+            )
+        ;
+        //Mage::log($collection->getSelect()->assemble());
+
         $this->getDefaultHelper()->log('Export ' . count($collection) . ' products');
         $rows = [];
         foreach($collection as $product) {
@@ -47,7 +66,11 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
                 usort($g['images'], 'Morozov_Similarity_Helper_Api::cmpImages');
                 $image = $g['images'][0];
                 $url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'catalog/product' . $image['file'];
-                $rows[]= [$product->getEntityId(), $url];
+                $rows[]= [
+                    $product->getEntityId(),
+                    $product->getIsInStock(),
+                    $url
+                ];
             }
             /*
             $mediaGallery = $product->getMediaGalleryImages();
