@@ -1,6 +1,8 @@
 <?php
 class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
 {
+    const CHECK_IMAGE_FILE_EXISTS = true;
+
     /**
      * Service ==> Magento
      */
@@ -65,6 +67,13 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
             if (count($g['images'])) {
                 usort($g['images'], 'Morozov_Similarity_Helper_Api::cmpImages');
                 $image = $g['images'][0];
+                if (self::CHECK_IMAGE_FILE_EXISTS) {
+                    $fileExists = file_exists(Mage::getBaseDir('media') . DS . 'catalog' . DS . 'product' . $image['file']);
+                    if (!$fileExists) {
+                        continue;
+                    }
+                }
+
                 $url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'catalog/product' . $image['file'];
                 $rows[]= [
                     $product->getEntityId(),

@@ -78,6 +78,9 @@ extends Mage_Core_Controller_Front_Action
 
     public function testAction()
     {
+        //var_dump(Mage::getBaseDir('media') . DS . 'catalog' . DS . 'product');
+        //exit;
+
         try {
             Mage::helper('morozov_similarity/api')->setAllProducts();
         } catch (Exception $e) {
