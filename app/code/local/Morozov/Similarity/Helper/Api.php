@@ -36,65 +36,31 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
 
     protected function collectProducts()
     {
-        $collection = Mage::getResourceModel('catalog/product_collection')
-            ->addAttributeToSelect('visibility')
-            ->addAttributeToFilter('visibility', ['nin' => [
-                Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE
-            ]])
-        ;
         $resource = Mage::getSingleton('core/resource');
-        $selectInStock = $resource->getConnection('core_read')->select();
-        $selectInStock
-            ->from(['si' => 'mage_cataloginventory_stock_item'], [
-                'product_id' => 'si.product_id',
-                'is_in_stock' => new Zend_Db_Expr('IF(SUM(is_in_stock)>0, 1, 0)')
-            ])
-            ->group('si.product_id')
-        ;
+        $read = $resource->getConnection('core_read');
+        $res = $read->query($this->getSqlHelper()->prepareExportProducts());
+        $products = $res->fetchAll();
 
-        $collection->getSelect()
-            ->joinInner(
-                ['si' => $selectInStock],
-                'si.product_id = e.entity_id',
-                'is_in_stock'
-            )
-        ;
-        //Mage::log($collection->getSelect()->assemble());
 
-        $this->getDefaultHelper()->log('Export ' . count($collection) . ' products');
         $rows = [];
         $rows[]= $this->csvColumns;
-        foreach($collection as $product) {
-            //Mage::log($product->getEntityId());
-            $attributeCode = 'media_gallery';
-            $attribute = $product->getResource()->getAttribute($attributeCode);
-            $backend = $attribute->getBackend();
-            $backend->afterLoad($product);
-            $g = $product->getData('media_gallery');
-            if (count($g['images'])) {
-                usort($g['images'], 'Morozov_Similarity_Helper_Api::cmpImages');
-                $image = $g['images'][0];
-                if (self::CHECK_IMAGE_FILE_EXISTS) {
-                    $fileExists = file_exists(Mage::getBaseDir('media') . DS . 'catalog' . DS . 'product' . $image['file']);
-                    if (!$fileExists) {
-                        continue;
-                    }
+        foreach($products as $product) {
+            $images = explode(',', $product['images']);
+            $image = $images[0];
+            if (self::CHECK_IMAGE_FILE_EXISTS) {
+                $fileExists = file_exists(Mage::getBaseDir('media') . DS . 'catalog' . DS . 'product' . $image);
+                if (!$fileExists) {
+                    continue;
                 }
-
-                $url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'catalog/product' . $image['file'];
-                $rows[]= [
-                    $product->getEntityId(),
-                    $product->getIsInStock(),
-                    $url
-                ];
             }
-            /*
-            $mediaGallery = $product->getMediaGalleryImages();
-            if (count($mediaGallery)) {
-                //Mage::log($product->getEntityId());
-            }
-            */
+            $url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'catalog/product' . $image;
+            $rows[]= [
+                $product['entity_id'],
+                $product['is_in_stock'],
+                $url
+            ];
         }
+        $this->getDefaultHelper()->log('Export ' . (count($rows) - 1) . ' products');
 
         $csvDir = $this->getDefaultHelper()->getExportDir();
         if (!is_dir($csvDir)) {
@@ -178,5 +144,10 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
     protected function getDefaultHelper()
     {
         return Mage::helper('morozov_similarity');
+    }
+
+    protected function getSqlHelper()
+    {
+        return Mage::helper('morozov_similarity/sql');
     }
 }
