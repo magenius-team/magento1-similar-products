@@ -17,10 +17,12 @@ class Morozov_Similarity_Model_Observer
 
     public function setProducts($observer)
     {
-        try {
-            Mage::helper('morozov_similarity/api')->setAllProducts();
-        } catch (Exception $e) {
-            $this->getDefaultHelper()->log($e->getMessage());
+        if ($this->getDefaultHelper()->canUse()) {
+            try {
+                Mage::helper('morozov_similarity/api')->setAllProducts();
+            } catch (Exception $e) {
+                $this->getDefaultHelper()->log($e->getMessage());
+            }
         }
     }
 

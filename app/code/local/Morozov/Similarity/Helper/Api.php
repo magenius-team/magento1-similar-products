@@ -3,6 +3,12 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
 {
     const CHECK_IMAGE_FILE_EXISTS = true;
 
+    protected $csvColumns = [
+        'product_id',
+        'is_in_stock',
+        'image'
+    ];
+
     /**
      * Service ==> Magento
      */
@@ -57,6 +63,7 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
 
         $this->getDefaultHelper()->log('Export ' . count($collection) . ' products');
         $rows = [];
+        $rows[]= $this->csvColumns;
         foreach($collection as $product) {
             //Mage::log($product->getEntityId());
             $attributeCode = 'media_gallery';
