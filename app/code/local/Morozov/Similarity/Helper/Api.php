@@ -36,32 +36,6 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
 
     protected function collectProducts()
     {
-        $resource = Mage::getSingleton('core/resource');
-        $read = $resource->getConnection('core_read');
-        $res = $read->query($this->getSqlHelper()->prepareExportProducts());
-        $products = $res->fetchAll();
-
-
-        $rows = [];
-        $rows[]= $this->csvColumns;
-        foreach($products as $product) {
-            $images = explode(',', $product['images']);
-            $image = $images[0];
-            if (self::CHECK_IMAGE_FILE_EXISTS) {
-                $fileExists = file_exists(Mage::getBaseDir('media') . DS . 'catalog' . DS . 'product' . $image);
-                if (!$fileExists) {
-                    continue;
-                }
-            }
-            $url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'catalog/product' . $image;
-            $rows[]= [
-                $product['entity_id'],
-                $product['is_in_stock'],
-                $url
-            ];
-        }
-        $this->getDefaultHelper()->log('Export ' . (count($rows) - 1) . ' products');
-
         $csvDir = $this->getDefaultHelper()->getExportDir();
         if (!is_dir($csvDir)) {
             if (!mkdir($csvDir)) {
@@ -71,9 +45,36 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
         if (!$f = fopen($this->getDefaultHelper()->getProductsFile(), 'w+')) {
             throw new Exception('Failed to create export Products file..');
         }
-        foreach($rows as $row) {
-            fputcsv($f, $row);
+        fputcsv($f, $this->csvColumns);
+
+        $resource = Mage::getSingleton('core/resource');
+        $read = $resource->getConnection('core_read');
+        $res = $read->query($this->getSqlHelper()->prepareExportProducts());
+        if ($res) {
+            $count = 0;
+            while($row = $res->fetch(PDO::FETCH_ASSOC)) {
+                $images = explode(',', $row['images']);
+                $image = $images[0];
+                if (self::CHECK_IMAGE_FILE_EXISTS) {
+                    $fileExists = file_exists(Mage::getBaseDir('media') . DS . 'catalog' . DS . 'product' . $image);
+                    if (!$fileExists) {
+                        continue;
+                    }
+                }
+                $url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'catalog/product' . $image;
+                $csvRow = [
+                    $row['entity_id'],
+                    $row['is_in_stock'],
+                    $url
+                ];
+                fputcsv($f, $csvRow);
+                $count++;
+            }
+            $this->getDefaultHelper()->log("Exported  $count  products");
+        } else {
+            throw new Exception('Failed to execute SQL..');
         }
+
         fclose($f);
     }
 
