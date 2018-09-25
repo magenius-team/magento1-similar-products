@@ -59,15 +59,7 @@ class Morozov_Similarity_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $res = $this->getIsEnabled() && $this->getUrl() && $this->getKey();
         $res = $res && (!Mage::app()->getStore()->isAdmin());
-
-        //return false;
-
         return $res;
-    }
-
-    public function isDummy()
-    {
-        return false;
     }
 
     public function getExportDir()

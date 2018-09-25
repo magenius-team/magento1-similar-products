@@ -14,16 +14,10 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
      */
     public function getUpSells($productId)
     {
-        if (Mage::helper('morozov_similarity')->isDummy()) {
-            $productId = 3923; // dummy
-        }
-
         $url = $this->getDefaultHelper()->getUrl() . 'api/view/' . $productId;
-        //Mage::log($url);
         $response = file_get_contents($url);
         $response = str_replace("NaN", '"NaN"', $response);
         $items = Zend_Json::decode($response);
-        //Mage::log($data);
         $tempArr = [];
         foreach ($items as $item) {
             if ($item[1] > 0.0000001) {
@@ -110,7 +104,6 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
             'file' => $this->getDefaultHelper()->getProductsFileUrl()
         ];
         $json = Zend_Json::encode($data);
-        //Mage::log($json);
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
