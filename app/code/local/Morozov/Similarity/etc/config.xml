@@ -29,14 +29,11 @@
                 <entities>
                 </entities>
             </morozov_similarity_resource>
-            <!-- MDN_AdvancedStock_Model_Catalog_Product -->
-
             <catalog>
                 <rewrite>
                     <product>Morozov_Similarity_Model_Rewrite_CatalogProduct</product>
                 </rewrite>
             </catalog>
-
         </models>
         <resources>
             <morozov_similarity_setup>

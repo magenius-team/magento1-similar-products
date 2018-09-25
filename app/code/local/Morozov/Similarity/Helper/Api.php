@@ -81,24 +81,6 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
 
         //@TODO: send CSV file to service
         $url = $this->getDefaultHelper()->getUrl() . 'api/reindex';
-
-        /*
-        $client = new Zend_Http_Client($url, [
-            //'timeout' => (int)$this->getDefaultHelper()->getTimeout()  // in seconds only
-        ]);
-        $data = [
-            'key'  => $this->getDefaultHelper()->getKey(),
-            'file' => $this->getDefaultHelper()->getProductsFileUrl()
-        ];
-        $client
-            ->setRawData(Zend_Json::encode($data))
-        ;
-        $response = $client->request('POST');
-        if ($response->getStatus() != 200) {
-            throw new Exception($url . ':  ' . $response->getMessage());
-        }
-        */
-
         $data = [
             'key' => $this->getDefaultHelper()->getKey(),
             'file' => $this->getDefaultHelper()->getProductsFileUrl()
@@ -113,12 +95,12 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
             'Content-Type: application/json',
             'Content-Length: ' . strlen($json)
         ]);
-        curl_setopt($ch, CURLOPT_NOSIGNAL, 1); // for linux
+        curl_setopt($ch, CURLOPT_NOSIGNAL, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT_MS, (int)$this->getDefaultHelper()->getTimeout());
         $result = curl_exec($ch);
 
         $info = curl_getinfo($ch);
-        $error = curl_errno($ch);  // 28 - timeout
+        $error = curl_errno($ch);
         $this->getDefaultHelper()->log($url);
         $this->getDefaultHelper()->log($info['http_code']);
         $this->getDefaultHelper()->log($result);
