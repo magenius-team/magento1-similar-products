@@ -3,6 +3,12 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
 {
     const CHECK_IMAGE_FILE_EXISTS = true;
 
+    const MASTER_URL       = 'https://master.similarity.morozov.group/';
+    const PATH_REGIONS     = 'api/regions';
+
+    const PATH_GET_UPSELLS = 'api/view/%s';
+    const PATH_REINDEX     = 'api/reindex';
+
     protected $csvColumns = [
         'product_id',
         'is_in_stock',
@@ -14,7 +20,7 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
      */
     public function getUpSells($productId)
     {
-        $url = $this->getDefaultHelper()->getUrl() . 'api/view/' . $productId;
+        $url = $this->getDefaultHelper()->getUrl() . sprintf(self::PATH_GET_UPSELLS, $productId);
         $response = file_get_contents($url);
         $response = str_replace("NaN", '"NaN"', $response);
         $items = Zend_Json::decode($response);
@@ -80,7 +86,7 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
         $this->collectProducts();
 
         //@TODO: send CSV file to service
-        $url = $this->getDefaultHelper()->getUrl() . 'api/reindex';
+        $url = $this->getDefaultHelper()->getUrl() . self::PATH_REINDEX;
         $data = [
             'key' => $this->getDefaultHelper()->getKey(),
             'file' => $this->getDefaultHelper()->getProductsFileUrl()
@@ -115,6 +121,27 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
     public static function cmpImages($a, $b)
     {
         return (int)$a['position_default'] >= (int)$b['position_default'];
+    }
+
+    public function getNearestRegion()
+    {
+        $config = file_get_contents(self::MASTER_URL . self::PATH_REGIONS);
+
+        $now = function () {
+            return time() + microtime(true);
+        };
+
+        $distances = json_decode($config, true);
+        array_walk($distances, function (&$region, $url) use ($now) {
+            $start = $now();
+            file_get_contents($region);
+            $region = number_format($now() - $start, 6);
+        });
+
+        asort($distances);
+        reset($distances);
+        $nearestRegion = key($distances);
+        return $nearestRegion;
     }
 
     protected function getDefaultHelper()
