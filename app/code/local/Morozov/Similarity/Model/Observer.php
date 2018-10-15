@@ -15,13 +15,13 @@ class Morozov_Similarity_Model_Observer
 
     public function setProducts($observer)
     {
-        if ($this->getDefaultHelper()->canUse()) {
+        //if ($this->getDefaultHelper()->canUse()) {
             try {
                 Mage::helper('morozov_similarity/api')->setAllProducts();
             } catch (Exception $e) {
                 $this->getDefaultHelper()->log($e->getMessage());
             }
-        }
+        //}
     }
 
     protected function getDefaultHelper()
