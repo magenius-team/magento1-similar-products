@@ -21,9 +21,11 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
     public function getUpSells($productId)
     {
         $url = $this->getDefaultHelper()->getUrl() . sprintf(self::PATH_GET_UPSELLS, $productId);
-        $response = file_get_contents($url);
+        if (!$response = @file_get_contents($url)) {
+            return [];
+        }
         $response = str_replace("NaN", '"NaN"', $response);
-        $items = Zend_Json::decode($response);
+        $items = Zend_Json::decode($response);  // error
         $tempArr = [];
         foreach ($items as $item) {
             if ($item[1] > 0.0000001) {

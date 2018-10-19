@@ -4,7 +4,8 @@ class Morozov_Similarity_Model_Observer
     public function onCatalogProductUpsell($observer)
     {
         $collection = $observer->getEvent()->getCollection();
-        if ($this->getDefaultHelper()->canUse()) {
+        if ($this->getDefaultHelper()->canUse()
+          && ($collection instanceof Morozov_Similarity_Model_Resource_UpSellProductCollection)) {
             $collection
                 ->setIsNotLoaded()
                 ->setPageSize($this->getDefaultHelper()->getUpSellMaxCount())
