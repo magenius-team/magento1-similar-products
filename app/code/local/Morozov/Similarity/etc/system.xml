@@ -30,9 +30,9 @@
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>5</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                            <comment><![CDATA[Comment.]]></comment>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[You can enable or disable at store level.]]></comment>
                         </enabled>
                         <email translate="label comment">
                             <label>Contact Email</label>
@@ -40,27 +40,27 @@
                             <frontend_type>text</frontend_type>
                             <sort_order>7</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                            <comment><![CDATA[Comment.]]></comment>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Point of contact in case if we need to reach you.]]></comment>
                         </email>
                         <url translate="label comment">
                             <label>Service URL</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                            <comment><![CDATA[]]></comment>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Url to the service point.]]></comment>
                         </url>
                         <key translate="label comment">
                             <label>Security Key</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                            <comment><![CDATA[]]></comment>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Key to push new products in]]></comment>
                         </key>
                         <timeout translate="label comment">
                             <label>Allowed Service Timeout</label>
@@ -69,7 +69,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>0</show_in_website>
                             <show_in_store>0</show_in_store>
-                            <comment><![CDATA[In milliseconds.]]></comment>
+                            <comment><![CDATA[In milliseconds. To be sure service is nearby and you have best performance.]]></comment>
                         </timeout>
                         <connect translate="label">
                             <label></label>
@@ -79,7 +79,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <comment><![CDATA[Connects your store with the service. As a response sends Service URL and Security Key.]]></comment>
+                            <comment><![CDATA[Connects your store with the service. As a response sends Service URL and Security Key. (May take a while) ]]></comment>
                         </connect>
                     </fields>
                 </general>
