@@ -10,7 +10,7 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
     const PATH_REINDEX     = 'api/reindex';
 
     protected $csvColumns = [
-        'product_id',
+        'entity_id',
         'is_in_stock',
         'image'
     ];
