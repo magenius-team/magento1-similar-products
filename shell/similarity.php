@@ -17,6 +17,7 @@ class Morozov_Similarity_Shell extends Mage_Shell_Abstract
         if ($this->getArg('reindexall')) {
             try {
                 $this->getApiHelper()->setAllProducts();
+                echo 'Products were successfully pushed to the service.';
             } catch (Exception $e) {
                 echo $e->getMessage();
             }
