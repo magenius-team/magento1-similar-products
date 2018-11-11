@@ -9,8 +9,6 @@
         <morozov_similarity>
             <general>
                 <enabled>0</enabled>
-                <url><![CDATA[]]></url>
-                <key></key>
                 <timeout>300</timeout>
             </general>
             <upsell_options>
