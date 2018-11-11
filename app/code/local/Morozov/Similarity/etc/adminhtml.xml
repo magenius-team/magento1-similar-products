@@ -9,7 +9,8 @@
                             <config>
                                 <children>
                                     <morozov_similarity>
-                                        <title>Similarity</title>
+                                        <title>Morozov Similarity</title>
+                                        <sort_order>210</sort_order>
                                     </morozov_similarity>
                                 </children>
                             </config>
