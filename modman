@@ -12,3 +12,6 @@ app/etc/modules/Morozov_Similarity.xml            app/etc/modules/Morozov_Simila
 # media
 
 # skin
+
+#shell
+shell/similarity.php            shell/similarity.php
