@@ -35,6 +35,8 @@ INNER JOIN
 AS media ON media.product_id = e.entity_id
 
 WHERE (at_visibility_default.value NOT IN(1))
+
+ORDER BY si.is_in_stock desc, e.entity_id desc
 SQL;
         return $sql;
     }
