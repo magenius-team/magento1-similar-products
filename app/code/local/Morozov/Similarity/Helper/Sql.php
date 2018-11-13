@@ -39,7 +39,7 @@ INNER JOIN
    SELECT image0.entity_id AS product_id, IFNULL(image.value, image0.value) AS images
    FROM {$resource->getTableName('catalog_product_entity_varchar')} AS image0
    LEFT JOIN {$resource->getTableName('catalog_product_entity_varchar')} AS image
-   ON (image.attribute_id = $imageAttrId) AND (image.store_id = $storeId) AND (image.entity_id = image0.entity_id) AND (image.value_id <> image0.value_id)
+   ON (image.attribute_id = $imageAttrId) AND (image.store_id = $storeId) AND (image.entity_id = image0.entity_id)
    WHERE (image0.attribute_id = $imageAttrId) AND (image0.store_id = 0)
 )
 AS media ON media.product_id = e.entity_id
