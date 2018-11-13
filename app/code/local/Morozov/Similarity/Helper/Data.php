@@ -4,11 +4,12 @@ class Morozov_Similarity_Helper_Data extends Mage_Core_Helper_Abstract
     const LOG_FILE      = 'morozov_similarity.log';
 
     const PATH_ENABLED  = 'morozov_similarity/general/enabled';
+    const PATH_EMAIL    = 'morozov_similarity/general/email';
     const PATH_URL      = 'morozov_similarity/general/url';
     const PATH_KEY      = 'morozov_similarity/general/key';
-    const PATH_EMAIL    = 'morozov_similarity/general/email';
-    const PATH_PASSWORD = 'morozov_similarity/general/password';
     const PATH_TIMEOUT  = 'morozov_similarity/general/timeout';
+    const PATH_CRON_ENABLED        = 'morozov_similarity/general/cron_enabled';
+    const PATH_IMAGE_CHECK_ENABLED = 'morozov_similarity/general/image_check_enabled';
 
     const PATH_UPSELL_MAXCOUNT = 'morozov_similarity/upsell_options/upsell_max_count';
 
@@ -20,39 +21,44 @@ class Morozov_Similarity_Helper_Data extends Mage_Core_Helper_Abstract
         Mage::log($message, null, self::LOG_FILE);
     }
 
-    public function getIsEnabled()
+    public function getIsEnabled($storeId = null)
     {
-        return Mage::getStoreConfigFlag(self::PATH_ENABLED);
+        return Mage::getStoreConfigFlag(self::PATH_ENABLED, $storeId);
     }
 
-    public function getUrl()
+    public function getEmail($storeId = null)
     {
-        return Mage::getStoreConfig(self::PATH_URL);
+        return Mage::getStoreConfig(self::PATH_EMAIL, $storeId);
     }
 
-    public function getKey()
+    public function getUrl($storeId = null)
     {
-        return Mage::getStoreConfig(self::PATH_KEY);
+        return Mage::getStoreConfig(self::PATH_URL, $storeId);
     }
 
-    public function getEmail()
+    public function getKey($storeId = null)
     {
-        return Mage::getStoreConfig(self::PATH_EMAIL);
+        return Mage::getStoreConfig(self::PATH_KEY, $storeId);
     }
 
-    public function getPassword()
+    public function getTimeout($storeId = null)
     {
-        return Mage::getStoreConfig(self::PATH_PASSWORD);
+        return Mage::getStoreConfig(self::PATH_TIMEOUT, $storeId);
     }
 
-    public function getTimeout()
+    public function getCronEnabled($storeId = null)
     {
-        return Mage::getStoreConfig(self::PATH_TIMEOUT);
+        return Mage::getStoreConfigFlag(self::PATH_CRON_ENABLED, $storeId);
     }
 
-    public function getUpSellMaxCount()
+    public function getImageCheckEnabled($storeId = null)
     {
-        return (int)Mage::getStoreConfig(self::PATH_UPSELL_MAXCOUNT);
+        return Mage::getStoreConfigFlag(self::PATH_IMAGE_CHECK_ENABLED, $storeId);
+    }
+
+    public function getUpSellMaxCount($storeId = null)
+    {
+        return (int)Mage::getStoreConfig(self::PATH_UPSELL_MAXCOUNT, $storeId);
     }
 
     public function canUse()
