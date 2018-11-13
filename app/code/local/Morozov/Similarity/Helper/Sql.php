@@ -5,7 +5,7 @@ class Morozov_Similarity_Helper_Sql extends Mage_Core_Helper_Abstract
 
     public function prepareExportProducts($storeId = 0)
     {
-        $storeId = 3;
+        //$storeId = 3;
         $resource = Mage::getSingleton('core/resource');
         $visibilityAttrId = Mage::getResourceModel('eav/entity_attribute')->getIdByCode('catalog_product', 'visibility');
         $imageAttrId = Mage::getResourceModel('eav/entity_attribute')->getIdByCode('catalog_product', 'image');
@@ -35,7 +35,7 @@ INNER JOIN
    -- LEFT JOIN {$resource->getTableName('catalog_product_entity_media_gallery_value')} AS mgv
    -- ON (mgv.value_id = mg.value_id) AND (mgv.store_id = $storeId) AND (mgv.disabled <> 1)
    -- GROUP BY mg.entity_id
-   
+
    SELECT image0.entity_id AS product_id, IFNULL(image.value, image0.value) AS images
    FROM {$resource->getTableName('catalog_product_entity_varchar')} AS image0
    LEFT JOIN {$resource->getTableName('catalog_product_entity_varchar')} AS image
