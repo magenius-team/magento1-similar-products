@@ -58,8 +58,9 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
                 $images = explode(',', $row['images']);
                 $image = $images[0];
                 if (self::CHECK_IMAGE_FILE_EXISTS) {
-                    $fileExists = file_exists(Mage::getBaseDir('media') . DS . 'catalog' . DS . 'product' . $image);
-                    if (!$fileExists) {
+                    //$fileExists = file_exists(Mage::getBaseDir('media') . DS . 'catalog' . DS . 'product' . $image);
+                    $isFile = is_file(Mage::getBaseDir('media') . DS . 'catalog' . DS . 'product' . $image);
+                    if (!$isFile) {
                         continue;
                     }
                 }
