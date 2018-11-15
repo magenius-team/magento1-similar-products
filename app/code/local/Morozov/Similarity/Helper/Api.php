@@ -1,19 +1,11 @@
 <?php
 class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
 {
-    const CHECK_IMAGE_FILE_EXISTS = true;
-
     const MASTER_URL       = 'https://master.similarity.morozov.group/';
     const PATH_REGIONS     = 'api/regions';
 
     const PATH_GET_UPSELLS = 'api/view/%s';
     const PATH_REINDEX     = 'api/reindex';
-
-    protected $csvColumns = [
-        'entity_id',
-        'is_in_stock',
-        'image'
-    ];
 
     /**
      * Service ==> Magento
@@ -37,57 +29,13 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
         return $ids;
     }
 
-    protected function collectProducts()
-    {
-        $csvDir = $this->getDefaultHelper()->getExportDir();
-        if (!is_dir($csvDir)) {
-            if (!mkdir($csvDir)) {
-                throw new Exception('Failed to create export directory..');
-            }
-        }
-        if (!$f = fopen($this->getDefaultHelper()->getProductsFile(), 'w+')) {
-            throw new Exception('Failed to create export Products file..');
-        }
-        fputcsv($f, $this->csvColumns);
-
-        $resource = Mage::getSingleton('core/resource');
-        $read = $resource->getConnection('core_read');
-        $res = $read->query($this->getSqlHelper()->prepareExportProducts((int)$this->getDefaultHelper()->getStoreId()));
-        if ($res) {
-            $count = 0;
-            while($row = $res->fetch(PDO::FETCH_ASSOC)) {
-                $images = explode(',', $row['images']);
-                $image = $images[0];
-                if (self::CHECK_IMAGE_FILE_EXISTS) {
-                    //$fileExists = file_exists(Mage::getBaseDir('media') . DS . 'catalog' . DS . 'product' . $image);
-                    $isFile = is_file(Mage::getBaseDir('media') . DS . 'catalog' . DS . 'product' . $image);
-                    if (!$isFile) {
-                        continue;
-                    }
-                }
-                $url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'catalog/product' . $image;
-                $csvRow = [
-                    $row['entity_id'],
-                    $row['is_in_stock'],
-                    $url
-                ];
-                fputcsv($f, $csvRow);
-                $count++;
-            }
-            $this->getDefaultHelper()->log("Total Products saved to disk: $count");
-        } else {
-            throw new Exception('Failed to execute SQL..');
-        }
-
-        fclose($f);
-    }
-
     /**
      * Service <== Magento
      */
     public function setAllProducts()
     {
-        $this->collectProducts();
+        //$this->collectProducts();
+        $this->getProductHelper()->collect();
 
         //@TODO: send CSV file to service
         $url = $this->getDefaultHelper()->getUrl() . self::PATH_REINDEX;
@@ -121,11 +69,6 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
         curl_close($ch);
     }
 
-    public static function cmpImages($a, $b)
-    {
-        return (int)$a['position_default'] >= (int)$b['position_default'];
-    }
-
     public function getNearestRegion()
     {
         $config = file_get_contents(self::MASTER_URL . self::PATH_REGIONS);
@@ -155,5 +98,10 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
     protected function getSqlHelper()
     {
         return Mage::helper('morozov_similarity/sql');
+    }
+
+    protected function getProductHelper()
+    {
+        return Mage::helper('morozov_similarity/product');
     }
 }
