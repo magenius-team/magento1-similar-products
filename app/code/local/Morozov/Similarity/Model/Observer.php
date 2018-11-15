@@ -30,6 +30,7 @@ class Morozov_Similarity_Model_Observer
                     $this->getDefaultHelper()->log('');
                     $this->getDefaultHelper()->log("Pushing Products to the service (Store ID = {$store->getStoreId()}): ");
                     $this->getApiHelper()->setAllProducts();
+                    $this->getDefaultHelper()->log('Done.');
                 }
             } catch (Exception $e) {
                 $this->getDefaultHelper()->log($e->getMessage());

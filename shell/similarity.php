@@ -22,13 +22,18 @@ class Morozov_Similarity_Shell extends Mage_Shell_Abstract
         if ($this->getArg('reindexall')) {
             foreach($this->getDefaultHelper()->getStores() as $store) {
                 try {
+                    $msg = "Pushing Products to the service (Store ID = {$store->getStoreId()}): ";
+                    echo "\n" . $msg;
                     $this->getDefaultHelper()->log('');
-                    echo "\nPushing Products to the service (Store ID = {$store->getStoreId()}): ";
+                    $this->getDefaultHelper()->log($msg);
                     $this->getDefaultHelper()->setStoreId($store->getStoreId());
                     $this->getApiHelper()->setAllProducts();
-                    echo 'Done.';
+                    $msg = 'Done.';
+                    echo $msg;
+                    $this->getDefaultHelper()->log($msg);
                 } catch (Exception $e) {
                     echo $e->getMessage();
+                    $this->getDefaultHelper()->log($e->getMessage());
                 }
             }
         } else if ($this->getArg('help')) {
