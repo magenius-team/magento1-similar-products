@@ -30,8 +30,7 @@ class Morozov_Similarity_Helper_Product extends Mage_Core_Helper_Abstract
             while($row = $res->fetch(PDO::FETCH_ASSOC)) {
                 $images = explode(',', $row['images']);
                 $image = $images[0];
-                if (self::CHECK_IMAGE_FILE_EXISTS) {
-                    //$fileExists = file_exists(Mage::getBaseDir('media') . DS . 'catalog' . DS . 'product' . $image);
+                if ($this->getDefaultHelper()->getImageCheckEnabled()) {
                     $isFile = is_file(Mage::getBaseDir('media') . DS . 'catalog' . DS . 'product' . $image);
                     if (!$isFile) {
                         continue;

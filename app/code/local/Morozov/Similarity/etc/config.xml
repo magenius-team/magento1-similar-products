@@ -9,7 +9,9 @@
         <morozov_similarity>
             <general>
                 <enabled>0</enabled>
-                <timeout>300</timeout>
+                <timeout>500</timeout>
+                <cron_enabled>1</cron_enabled>
+                <image_check_enabled>1</image_check_enabled>
             </general>
             <upsell_options>
                 <upsell_max_count>10</upsell_max_count>

@@ -23,18 +23,18 @@ class Morozov_Similarity_Model_Observer
 
     public function setProducts($observer)
     {
-        //if ($this->getDefaultHelper()->canUse()) {
         foreach($this->getDefaultHelper()->getStores() as $store) {
             try {
-                $this->getDefaultHelper()->log();
-                $this->getDefaultHelper()->log("Pushing Products to the service (Store ID = {$store->getStoreId()}): ");
                 $this->getDefaultHelper()->setStoreId($store->getStoreId());
-                $this->getApiHelper()->setAllProducts();
+                if ($this->getDefaultHelper()->getCronEnabled()) {
+                    $this->getDefaultHelper()->log('');
+                    $this->getDefaultHelper()->log("Pushing Products to the service (Store ID = {$store->getStoreId()}): ");
+                    $this->getApiHelper()->setAllProducts();
+                }
             } catch (Exception $e) {
                 $this->getDefaultHelper()->log($e->getMessage());
             }
         }
-        //}
     }
 
     protected function getDefaultHelper()
