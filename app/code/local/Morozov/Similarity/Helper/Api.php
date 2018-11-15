@@ -22,7 +22,8 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
     {
         $url = $this->getDefaultHelper()->getUrl() . sprintf(self::PATH_GET_UPSELLS, $productId);
         if (!$response = @file_get_contents($url)) {
-            return [];
+            throw new Exception($url . ' empty response');
+            //return [];
         }
         $response = str_replace("NaN", '"NaN"', $response);
         $items = Zend_Json::decode($response);  // error
@@ -51,7 +52,7 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
 
         $resource = Mage::getSingleton('core/resource');
         $read = $resource->getConnection('core_read');
-        $res = $read->query($this->getSqlHelper()->prepareExportProducts());
+        $res = $read->query($this->getSqlHelper()->prepareExportProducts((int)$this->getDefaultHelper()->getStoreId()));
         if ($res) {
             $count = 0;
             while($row = $res->fetch(PDO::FETCH_ASSOC)) {
@@ -73,7 +74,7 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
                 fputcsv($f, $csvRow);
                 $count++;
             }
-            $this->getDefaultHelper()->log("Exported  $count  products");
+            $this->getDefaultHelper()->log("Total Products saved to disk: $count");
         } else {
             throw new Exception('Failed to execute SQL..');
         }
@@ -111,8 +112,7 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
         $info = curl_getinfo($ch);
         $error = curl_errno($ch);
         $this->getDefaultHelper()->log($url);
-        $this->getDefaultHelper()->log($info['http_code']);
-        $this->getDefaultHelper()->log($result);
+        $this->getDefaultHelper()->log($info['http_code'] . ' ' . str_replace(["\n", "\r"], ['', ''], $result));
         if ($error) {
             $message = curl_error($ch);
             throw new Exception($error . ' ' . $message);

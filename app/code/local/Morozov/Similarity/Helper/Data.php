@@ -16,49 +16,53 @@ class Morozov_Similarity_Helper_Data extends Mage_Core_Helper_Abstract
     const EXPORT_DIR    = 'morozov_similarity';
     const PRODUCTS_FILE = 'products.csv';
 
+    protected $storeId;
+
     public function log($message)
     {
         Mage::log($message, null, self::LOG_FILE);
     }
 
-    public function getIsEnabled($storeId = null)
+    public function getIsEnabled()
     {
-        return Mage::getStoreConfigFlag(self::PATH_ENABLED, $storeId);
+        return Mage::getStoreConfigFlag(self::PATH_ENABLED, $this->getStoreId());
     }
 
-    public function getEmail($storeId = null)
+    public function getEmail()
     {
-        return Mage::getStoreConfig(self::PATH_EMAIL, $storeId);
+        return Mage::getStoreConfig(self::PATH_EMAIL, $this->getStoreId());
     }
 
-    public function getUrl($storeId = null)
+    public function getUrl()
     {
-        return Mage::getStoreConfig(self::PATH_URL, $storeId);
+        //Mage::log('getIsEnabled');
+        //Mage::log($this->storeId);
+        return Mage::getStoreConfig(self::PATH_URL, $this->getStoreId());
     }
 
-    public function getKey($storeId = null)
+    public function getKey()
     {
-        return Mage::getStoreConfig(self::PATH_KEY, $storeId);
+        return Mage::getStoreConfig(self::PATH_KEY, $this->getStoreId());
     }
 
-    public function getTimeout($storeId = null)
+    public function getTimeout()
     {
-        return Mage::getStoreConfig(self::PATH_TIMEOUT, $storeId);
+        return Mage::getStoreConfig(self::PATH_TIMEOUT, $this->getStoreId());
     }
 
-    public function getCronEnabled($storeId = null)
+    public function getCronEnabled()
     {
-        return Mage::getStoreConfigFlag(self::PATH_CRON_ENABLED, $storeId);
+        return Mage::getStoreConfigFlag(self::PATH_CRON_ENABLED, $this->getStoreId());
     }
 
-    public function getImageCheckEnabled($storeId = null)
+    public function getImageCheckEnabled()
     {
-        return Mage::getStoreConfigFlag(self::PATH_IMAGE_CHECK_ENABLED, $storeId);
+        return Mage::getStoreConfigFlag(self::PATH_IMAGE_CHECK_ENABLED, $this->getStoreId());
     }
 
-    public function getUpSellMaxCount($storeId = null)
+    public function getUpSellMaxCount()
     {
-        return (int)Mage::getStoreConfig(self::PATH_UPSELL_MAXCOUNT, $storeId);
+        return (int)Mage::getStoreConfig(self::PATH_UPSELL_MAXCOUNT, $this->getStoreId());
     }
 
     public function canUse()
@@ -74,15 +78,37 @@ class Morozov_Similarity_Helper_Data extends Mage_Core_Helper_Abstract
         return $dir;
     }
 
+    protected function getProductsFileName()
+    {
+        $filename = $this->getStoreId() ? "products_{$this->getStoreId()}.csv" : 'products.csv';
+        return $filename;
+    }
+
     public function getProductsFile()
     {
-        $file = $this->getExportDir() . DS . self::PRODUCTS_FILE;
+        $file = $this->getExportDir() . DS . $this->getProductsFileName();
         return $file;
     }
 
     public function getProductsFileUrl()
     {
-        $url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . self::EXPORT_DIR . '/' . self::PRODUCTS_FILE;
+        $url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . self::EXPORT_DIR . '/' . $this->getProductsFileName();
         return $url;
+    }
+
+    public function setStoreId($storeId)
+    {
+        $this->storeId = $storeId;
+    }
+
+    public function getStoreId()
+    {
+        return $this->storeId;
+    }
+
+    public function getStores()
+    {
+        $stores = Mage::app()->getStores();
+        return $stores;
     }
 }

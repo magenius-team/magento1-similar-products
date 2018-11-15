@@ -3,6 +3,11 @@ require_once 'abstract.php';
 
 class Morozov_Similarity_Shell extends Mage_Shell_Abstract
 {
+    protected function getDefaultHelper()
+    {
+        return Mage::helper('morozov_similarity');
+    }
+
     protected function getApiHelper()
     {
         return Mage::helper('morozov_similarity/api');
@@ -15,11 +20,16 @@ class Morozov_Similarity_Shell extends Mage_Shell_Abstract
     public function run()
     {
         if ($this->getArg('reindexall')) {
-            try {
-                $this->getApiHelper()->setAllProducts();
-                echo 'Products were successfully pushed to the service.';
-            } catch (Exception $e) {
-                echo $e->getMessage();
+            foreach($this->getDefaultHelper()->getStores() as $store) {
+                try {
+                    $this->getDefaultHelper()->log('');
+                    echo "\nPushing Products to the service (Store ID = {$store->getStoreId()}): ";
+                    $this->getDefaultHelper()->setStoreId($store->getStoreId());
+                    $this->getApiHelper()->setAllProducts();
+                    echo 'Done.';
+                } catch (Exception $e) {
+                    echo $e->getMessage();
+                }
             }
         } else if ($this->getArg('help')) {
             echo $this->usageHelp();

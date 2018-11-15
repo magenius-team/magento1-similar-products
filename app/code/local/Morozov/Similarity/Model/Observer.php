@@ -24,16 +24,26 @@ class Morozov_Similarity_Model_Observer
     public function setProducts($observer)
     {
         //if ($this->getDefaultHelper()->canUse()) {
+        foreach($this->getDefaultHelper()->getStores() as $store) {
             try {
-                Mage::helper('morozov_similarity/api')->setAllProducts();
+                $this->getDefaultHelper()->log();
+                $this->getDefaultHelper()->log("Pushing Products to the service (Store ID = {$store->getStoreId()}): ");
+                $this->getDefaultHelper()->setStoreId($store->getStoreId());
+                $this->getApiHelper()->setAllProducts();
             } catch (Exception $e) {
                 $this->getDefaultHelper()->log($e->getMessage());
             }
+        }
         //}
     }
 
     protected function getDefaultHelper()
     {
         return Mage::helper('morozov_similarity');
+    }
+
+    protected function getApiHelper()
+    {
+        return Mage::helper('morozov_similarity/api');
     }
 }
