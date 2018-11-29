@@ -8,21 +8,23 @@ extends Mage_CatalogSearch_AdvancedController
     {
         $this->loadLayout();
         try {
-            Mage::getSingleton('catalogsearch/advanced')->addFilters($this->getRequest()->getQuery());
-            if ($similar = $this->getSimilar()) {
-                $this->addSimilarFilters(Mage::getSingleton('catalogsearch/advanced'), $similar);
+            try {
+                Mage::getSingleton('catalogsearch/advanced')->addFilters($this->getRequest()->getQuery());
+                $this->addSimilarFiltersIfNeed(Mage::getSingleton('catalogsearch/advanced'));
+            } catch (Mage_Core_Exception $e) {
+                if ($this->detectTermsNotSpecifiedMsg($e->getMessage())) {
+                    $this->addSimilarFiltersIfNeed(Mage::getSingleton('catalogsearch/advanced'));
+                } else {
+                    throw $e;
+                }
             }
         } catch (Mage_Core_Exception $e) {
-            if (($similar = $this->getSimilar()) && $this->detectTermsNotSpecifiedMsg($e->getMessage())) {
-                $this->addSimilarFilters(Mage::getSingleton('catalogsearch/advanced'), $similar);
-            } else {
-                Mage::getSingleton('catalogsearch/session')->addError($e->getMessage());
-                $this->_redirectError(
-                    Mage::getModel('core/url')
-                        ->setQueryParams($this->getRequest()->getQuery())
-                        ->getUrl('*/*/')
-                );
-            }
+            Mage::getSingleton('catalogsearch/session')->addError($e->getMessage());
+            $this->_redirectError(
+                Mage::getModel('core/url')
+                    ->setQueryParams($this->getRequest()->getQuery())
+                    ->getUrl('*/*/')
+            );
         }
         $this->_initLayoutMessages('catalog/session');
         $this->renderLayout();
@@ -40,14 +42,16 @@ extends Mage_CatalogSearch_AdvancedController
         return $similar;
     }
 
-    protected function addSimilarFilters(Mage_CatalogSearch_Model_Advanced $advanced, $similar)
+    protected function addSimilarFiltersIfNeed(Mage_CatalogSearch_Model_Advanced $advanced)
     {
         // @TODO: get all similar Products from the service
-        /*
-        $advanced->getProductCollection()
-            ->addFieldToFilter('entity_id', ['in' => [340, 31660]])
-        ;
-        Mage::log(Mage::getSingleton('catalogsearch/advanced')->getProductCollection()->getSelect()->assemble());
-        */
+        if ($similar = $this->getSimilar()) {
+            /*
+            $advanced->getProductCollection()
+                ->addFieldToFilter('entity_id', ['in' => [340, 31660]])
+            ;
+            */
+            //throw new Mage_Core_Exception('2222');
+        }
     }
 }
