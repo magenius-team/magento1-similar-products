@@ -76,6 +76,20 @@
                     <frontName>morozov_similarity</frontName>
                 </args>
             </morozov_similarity>
+            <similar>
+                <use>standard</use>
+                <args>
+                    <module>Morozov_Similarity</module>
+                    <frontName>similar</frontName>
+                </args>
+            </similar>
+            <catalogsearch>
+                <args>
+                    <modules>
+                        <morozov_similarity before="Mage_CatalogSearch">Morozov_Similarity</morozov_similarity>
+                    </modules>
+                </args>
+            </catalogsearch>
         </routers>
         <events>
             <catalog_product_upsell>
