@@ -46,23 +46,33 @@ extends Mage_CatalogSearch_AdvancedController
 
     protected function addSimilarFilters(Mage_CatalogSearch_Model_Advanced $advanced, $similar)
     {
-        // @TODO: get all similar Products from the service
-        /*
-        if ($similar = $this->getSimilar()) {
-
-            //$advanced->getProductCollection()
-            //    ->addFieldToFilter('entity_id', ['in' => [340, 31660]])
-            //;
-
-            //
-        } else {
-            //throw new Mage_Core_Exception('Similar param is not specified');
+        $ids = [];
+        try {
+            $ids = @$this->getApiHelper()->getUpSells((int)$similar);
+            $advanced->getProductCollection()
+                ->addFieldToFilter('entity_id', ['in' => $ids])
+            ;
+        } catch (Exception $e) {
+            $this->getDefaultHelper()->log('Advanced Search: ' . $e->getMessage());
         }
-        */
+        if (!$ids) {
+            throw new Mage_Core_Exception("Couldn't get similar products from the service..");
+        }
+
     }
 
     protected function getAdvancedSearchHelper()
     {
         return Mage::helper('morozov_similarity/advancedSearch');
+    }
+
+    protected function getApiHelper()
+    {
+        return Mage::helper('morozov_similarity/api');
+    }
+
+    protected function getDefaultHelper()
+    {
+        return Mage::helper('morozov_similarity');
     }
 }
