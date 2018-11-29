@@ -10,10 +10,12 @@ extends Mage_CatalogSearch_AdvancedController
         try {
             try {
                 Mage::getSingleton('catalogsearch/advanced')->addFilters($this->getRequest()->getQuery());
-                $this->addSimilarFiltersIfNeed(Mage::getSingleton('catalogsearch/advanced'));
+                if ($this->getSimilar()) {
+                    $this->addSimilarFilters(Mage::getSingleton('catalogsearch/advanced'), $this->getSimilar());
+                }
             } catch (Mage_Core_Exception $e) {
-                if ($this->detectTermsNotSpecifiedMsg($e->getMessage())) {
-                    $this->addSimilarFiltersIfNeed(Mage::getSingleton('catalogsearch/advanced'));
+                if ($this->getSimilar() && $this->detectTermsNotSpecifiedMsg($e->getMessage())) {
+                    $this->addSimilarFilters(Mage::getSingleton('catalogsearch/advanced'), $this->getSimilar());
                 } else {
                     throw $e;
                 }
@@ -38,20 +40,29 @@ extends Mage_CatalogSearch_AdvancedController
 
     protected function getSimilar()
     {
-        $similar = $this->getRequest()->getParam('similar');
+        $similar = $this->getRequest()->getParam($this->getAdvancedSearchHelper()->getSimilarVarName());
         return $similar;
     }
 
-    protected function addSimilarFiltersIfNeed(Mage_CatalogSearch_Model_Advanced $advanced)
+    protected function addSimilarFilters(Mage_CatalogSearch_Model_Advanced $advanced, $similar)
     {
         // @TODO: get all similar Products from the service
+        /*
         if ($similar = $this->getSimilar()) {
-            /*
-            $advanced->getProductCollection()
-                ->addFieldToFilter('entity_id', ['in' => [340, 31660]])
-            ;
-            */
-            //throw new Mage_Core_Exception('2222');
+
+            //$advanced->getProductCollection()
+            //    ->addFieldToFilter('entity_id', ['in' => [340, 31660]])
+            //;
+
+            //
+        } else {
+            //throw new Mage_Core_Exception('Similar param is not specified');
         }
+        */
+    }
+
+    protected function getAdvancedSearchHelper()
+    {
+        return Mage::helper('morozov_similarity/advancedSearch');
     }
 }
