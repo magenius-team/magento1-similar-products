@@ -66,6 +66,17 @@
                 <class>Morozov_Similarity_Helper</class>
             </morozov_similarity>
         </helpers>
+        <events>
+            <controller_front_init_routers>
+                <observers>
+                    <morozov_similarity_controller_front_init_routers>
+                        <type>singleton</type>
+                        <class>Morozov_Similarity_Model_Observer_Controller</class>
+                        <method>initControllerRouters</method>
+                    </morozov_similarity_controller_front_init_routers>
+                </observers>
+            </controller_front_init_routers>
+        </events>
     </global>
     <frontend>
         <routers>
@@ -76,6 +87,7 @@
                     <frontName>morozov_similarity</frontName>
                 </args>
             </morozov_similarity>
+            <!--
             <similar>
                 <use>standard</use>
                 <args>
@@ -83,6 +95,7 @@
                     <frontName>similar</frontName>
                 </args>
             </similar>
+            -->
             <catalogsearch>
                 <args>
                     <modules>
