@@ -76,6 +76,15 @@
                     </morozov_similarity_controller_front_init_routers>
                 </observers>
             </controller_front_init_routers>
+            <controller_front_init_before>
+                <observers>
+                    <morozov_similarity_controller_front_init_before>
+                        <type>singleton</type>
+                        <class>morozov_similarity/observer_controller</class>
+                        <method>onFrontInitBefore</method>
+                    </morozov_similarity_controller_front_init_before>
+                </observers>
+            </controller_front_init_before>
         </events>
     </global>
     <frontend>
@@ -123,6 +132,15 @@
                     </morozov_similarity_core_block_abstract_to_html_after>
                 </observers>
             </core_block_abstract_to_html_after>
+            <catalog_product_collection_load_before>
+                <observers>
+                    <morozov_similarity_catalog_product_collection_load_before>
+                        <type>singleton</type>
+                        <class>morozov_similarity/observer_collection</class>
+                        <method>onCatalogProductCollectionLoadBefore</method>
+                    </morozov_similarity_catalog_product_collection_load_before>
+                </observers>
+            </catalog_product_collection_load_before>
         </events>
     </frontend>
     <admin>

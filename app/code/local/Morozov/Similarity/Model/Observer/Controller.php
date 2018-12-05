@@ -8,4 +8,11 @@ class Morozov_Similarity_Model_Observer_Controller
         $router = new Morozov_Similarity_Controller_Router();
         $front->addRouter($router->getFrontName(), $router);
     }
+
+    public function onFrontInitBefore($observer)
+    {
+        $front = $observer->getEvent()->getFront();
+        //Mage::log('iiii');
+        //Mage::log(Mage::app()->getRequest()->getParams());
+    }
 }

@@ -1,5 +1,5 @@
 <?php
-class Morozov_Similarity_Helper_AdvancedSearch extends Mage_Core_Helper_Abstract
+class Morozov_Similarity_Helper_Request extends Mage_Core_Helper_Abstract
 {
     protected $similarVarName = 'similar';
 

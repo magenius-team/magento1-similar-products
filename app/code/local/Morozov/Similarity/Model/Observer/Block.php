@@ -14,11 +14,11 @@ class Morozov_Similarity_Model_Observer_Block
 
     protected function injectSimilarFormInput($block, $html)
     {
-        if ($similar = $this->getAdvancedSearchHelper()->getSimilar()) {
+        if ($similar = $this->getRequestHelper()->getSimilar()) {
             $url = str_replace(['/'], ['\/'], $block->getSearchPostUrl());
             $html = preg_replace(
                 "/(<form(.)+($url)(.)+>)/i",
-                "$1" . $this->getAdvancedSearchHelper()->getSimilarFormInput($similar),
+                "$1" . $this->getRequestHelper()->getSimilarFormInput($similar),
                 $html
             );
         }
@@ -31,8 +31,8 @@ class Morozov_Similarity_Model_Observer_Block
         return $res;
     }
 
-    protected function getAdvancedSearchHelper()
+    protected function getRequestHelper()
     {
-        return Mage::helper('morozov_similarity/advancedSearch');
+        return Mage::helper('morozov_similarity/request');
     }
 }

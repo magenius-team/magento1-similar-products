@@ -10,11 +10,11 @@ extends Mage_CatalogSearch_AdvancedController
         try {
             try {
                 Mage::getSingleton('catalogsearch/advanced')->addFilters($this->getRequest()->getQuery());
-                if ($similar = $this->getAdvancedSearchHelper()->getSimilar()) {
+                if ($similar = $this->getRequestHelper()->getSimilar()) {
                     $this->addSimilarFilters(Mage::getSingleton('catalogsearch/advanced'), $similar);
                 }
             } catch (Mage_Core_Exception $e) {
-                if (($similar = $this->getAdvancedSearchHelper()->getSimilar()) && $this->detectTermsNotSpecifiedMsg($e->getMessage())) {
+                if (($similar = $this->getRequestHelper()->getSimilar()) && $this->detectTermsNotSpecifiedMsg($e->getMessage())) {
                     $this->addSimilarFilters(Mage::getSingleton('catalogsearch/advanced'), $similar);
                 } else {
                     throw $e;
@@ -38,14 +38,6 @@ extends Mage_CatalogSearch_AdvancedController
         return $res;
     }
 
-    /*
-    protected function getSimilar()
-    {
-        $similar = $this->getRequest()->getParam($this->getAdvancedSearchHelper()->getSimilarVarName());
-        return $similar;
-    }
-    */
-
     protected function addSimilarFilters(Mage_CatalogSearch_Model_Advanced $advanced, $similar)
     {
         $ids = [];
@@ -63,9 +55,9 @@ extends Mage_CatalogSearch_AdvancedController
 
     }
 
-    protected function getAdvancedSearchHelper()
+    protected function getRequestHelper()
     {
-        return Mage::helper('morozov_similarity/advancedSearch');
+        return Mage::helper('morozov_similarity/request');
     }
 
     protected function getApiHelper()
