@@ -18,7 +18,7 @@ class Morozov_Similarity_Controller_Router extends Mage_Core_Controller_Varien_R
         }
 
         if (stristr($request->getPathInfo(), '/' . $this->getFrontName())) {
-            if ($productId = $this->getHelper()->getProductIdByUrl($request->getPathInfo())) {
+            if ($productId = $this->getRouterHelper()->getProductIdByUrl($request->getPathInfo())) {
                 $request
                     ->setModuleName('catalogsearch')
                     ->setControllerName('advanced')
@@ -37,6 +37,8 @@ class Morozov_Similarity_Controller_Router extends Mage_Core_Controller_Varien_R
                     ])
                 ;
                 return true;
+            } else {
+                $this->getDefaultHelper()->log('Router: failed to load Product by URL ' . $request->getPathInfo());
             }
         }
 
@@ -48,7 +50,12 @@ class Morozov_Similarity_Controller_Router extends Mage_Core_Controller_Varien_R
         return self::FRONT_NAME;
     }
 
-    public function getHelper()
+    public function getDefaultHelper()
+    {
+        return Mage::helper('morozov_similarity');
+    }
+
+    public function getRouterHelper()
     {
         return Mage::helper('morozov_similarity/router');
     }
