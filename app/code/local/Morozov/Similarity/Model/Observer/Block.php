@@ -14,12 +14,14 @@ class Morozov_Similarity_Model_Observer_Block
 
     protected function injectSimilarFormInput($block, $html)
     {
-        $url = str_replace(['/'], ['\/'], $block->getSearchPostUrl());
-        $html = preg_replace(
-            "/(<form(.)+($url)(.)+>)/i",
-            "$1" . $this->getAdvancedSearchHelper()->getSimilarFormInput(),
-            $html
-        );
+        if ($similar = $this->getAdvancedSearchHelper()->getSimilar()) {
+            $url = str_replace(['/'], ['\/'], $block->getSearchPostUrl());
+            $html = preg_replace(
+                "/(<form(.)+($url)(.)+>)/i",
+                "$1" . $this->getAdvancedSearchHelper()->getSimilarFormInput($similar),
+                $html
+            );
+        }
         return $html;
     }
 

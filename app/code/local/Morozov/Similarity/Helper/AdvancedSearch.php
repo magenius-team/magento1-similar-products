@@ -8,10 +8,16 @@ class Morozov_Similarity_Helper_AdvancedSearch extends Mage_Core_Helper_Abstract
         return $this->similarVarName;
     }
 
-    public function getSimilarFormInput()
+    public function getSimilar()
+    {
+        $similar = Mage::app()->getRequest()->getParam($this->getSimilarVarName());
+        return $similar;
+    }
+
+    public function getSimilarFormInput($value = '')
     {
         $input = '';
-        if ($value = Mage::app()->getRequest()->getParam($this->getSimilarVarName())) {
+        if ($value) {
             $input = '<input type="hidden" name="' . $this->getSimilarVarName() . '" value="' . $value . '"/>';
         }
         return $input;

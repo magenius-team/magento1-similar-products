@@ -10,12 +10,12 @@ extends Mage_CatalogSearch_AdvancedController
         try {
             try {
                 Mage::getSingleton('catalogsearch/advanced')->addFilters($this->getRequest()->getQuery());
-                if ($this->getSimilar()) {
-                    $this->addSimilarFilters(Mage::getSingleton('catalogsearch/advanced'), $this->getSimilar());
+                if ($similar = $this->getAdvancedSearchHelper()->getSimilar()) {
+                    $this->addSimilarFilters(Mage::getSingleton('catalogsearch/advanced'), $similar);
                 }
             } catch (Mage_Core_Exception $e) {
-                if ($this->getSimilar() && $this->detectTermsNotSpecifiedMsg($e->getMessage())) {
-                    $this->addSimilarFilters(Mage::getSingleton('catalogsearch/advanced'), $this->getSimilar());
+                if (($similar = $this->getAdvancedSearchHelper()->getSimilar()) && $this->detectTermsNotSpecifiedMsg($e->getMessage())) {
+                    $this->addSimilarFilters(Mage::getSingleton('catalogsearch/advanced'), $similar);
                 } else {
                     throw $e;
                 }
@@ -38,11 +38,13 @@ extends Mage_CatalogSearch_AdvancedController
         return $res;
     }
 
+    /*
     protected function getSimilar()
     {
         $similar = $this->getRequest()->getParam($this->getAdvancedSearchHelper()->getSimilarVarName());
         return $similar;
     }
+    */
 
     protected function addSimilarFilters(Mage_CatalogSearch_Model_Advanced $advanced, $similar)
     {
