@@ -34,6 +34,11 @@
                     <product>Morozov_Similarity_Model_Rewrite_CatalogProduct</product>
                 </rewrite>
             </catalog>
+            <catalogsearch>
+                <rewrite>
+                    <advanced>Morozov_Similarity_Model_Rewrite_CatalogSearchAdvanced</advanced>
+                </rewrite>
+            </catalogsearch>
         </models>
         <resources>
             <morozov_similarity_setup>
@@ -97,14 +102,6 @@
                 </args>
             </morozov_similarity>
             <!--
-            <similar>
-                <use>standard</use>
-                <args>
-                    <module>Morozov_Similarity</module>
-                    <frontName>similar</frontName>
-                </args>
-            </similar>
-            -->
             <catalogsearch>
                 <args>
                     <modules>
@@ -112,6 +109,7 @@
                     </modules>
                 </args>
             </catalogsearch>
+            -->
         </routers>
         <events>
             <catalog_product_upsell>
