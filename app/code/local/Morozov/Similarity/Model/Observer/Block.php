@@ -9,10 +9,12 @@ class Morozov_Similarity_Model_Observer_Block
                 // is not working for filtering products within a category..
             }
             if ($similar = $this->getRequestHelper()->getSimilar()) {
-                // @TODO: get similar products from the service
-                //$block->getLoadedProductCollection()->addFieldToFilter('entity_id', ['in' => [194, 30939]]);
+                if ($ids = @$this->getApiHelper()->getUpSells((int)$similar)) {
+                    $block->getLoadedProductCollection()->addFieldToFilter('entity_id', ['in' => $ids]);
+                } else {
+                    $block->getLoadedProductCollection()->addFieldToFilter('entity_id', null);
+                }
             }
-
         }
     }
 
@@ -24,6 +26,7 @@ class Morozov_Similarity_Model_Observer_Block
 
     protected function detectCategoryViewPage()
     {
+        //@TODO: add other Request URIs to process more product list pages
         if (stristr(Mage::app()->getRequest()->getRequestUri(), '/catalog/category/view')) {
             return true;
         }
@@ -64,5 +67,10 @@ class Morozov_Similarity_Model_Observer_Block
     protected function getRequestHelper()
     {
         return Mage::helper('morozov_similarity/request');
+    }
+
+    protected function getApiHelper()
+    {
+        return Mage::helper('morozov_similarity/api');
     }
 }
