@@ -1,6 +1,36 @@
 <?php
 class Morozov_Similarity_Model_Observer_Block
 {
+    public function onToHtmlBefore($observer)
+    {
+        $block = $observer->getEvent()->getBlock();
+        if ($this->detectCatalogProductList($block) && $this->detectCategoryViewPage()) {
+            if ($block->getParentBlock() instanceof  Mage_Catalog_Block_Category_View) {
+                // is not working for filtering products within a category..
+            }
+            if ($similar = $this->getRequestHelper()->getSimilar()) {
+                // @TODO: get similar products from the service
+                //$block->getLoadedProductCollection()->addFieldToFilter('entity_id', ['in' => [194, 30939]]);
+            }
+
+        }
+    }
+
+    protected function detectCatalogProductList($block)
+    {
+        $res = $block instanceof Mage_Catalog_Block_Product_List;
+        return $res;
+    }
+
+    protected function detectCategoryViewPage()
+    {
+        if (stristr(Mage::app()->getRequest()->getRequestUri(), '/catalog/category/view')) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function onToHtmlAfter($observer)
     {
         $block = $observer->getEvent()->getBlock();
