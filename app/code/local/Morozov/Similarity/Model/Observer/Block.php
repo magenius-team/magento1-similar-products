@@ -9,11 +9,15 @@ class Morozov_Similarity_Model_Observer_Block
                 // is not working for filtering products within a category..
             }
             if ($similar = $this->getRequestHelper()->getSimilar()) {
-                if ($ids = @$this->getApiHelper()->getUpSells((int)$similar)) {
-                    $block->getLoadedProductCollection()->addFieldToFilter('entity_id', ['in' => $ids]);
-                } else {
-                    $block->getLoadedProductCollection()->addFieldToFilter('entity_id', null);
+                try {
+                    if ($ids = @$this->getApiHelper()->getUpSells((int)$similar)) {
+                        $block->getLoadedProductCollection()->addFieldToFilter('entity_id', ['in' => $ids]);
+                        return;
+                    }
+                } catch (Exception $e) {
+                    $this->getDefaultHelper()->log('Category: ' . $e->getMessage());
                 }
+                $block->getLoadedProductCollection()->addFieldToFilter('entity_id', null);
             }
         }
     }
@@ -62,6 +66,11 @@ class Morozov_Similarity_Model_Observer_Block
     {
         $res = $block instanceof Mage_CatalogSearch_Block_Advanced_Form;
         return $res;
+    }
+
+    protected function getDefaultHelper()
+    {
+        return Mage::helper('morozov_similarity');
     }
 
     protected function getRequestHelper()

@@ -28,10 +28,11 @@ class Morozov_Similarity_Model_Rewrite_CatalogSearchAdvanced extends Mage_Catalo
     {
         $ids = [];
         try {
-            $ids = @$this->getApiHelper()->getUpSells((int)$similar);
-            $this->getProductCollection()
-                ->addFieldToFilter('entity_id', ['in' => $ids])
-            ;
+            if ($ids = @$this->getApiHelper()->getUpSells((int)$similar)) {
+                $this->getProductCollection()
+                    ->addFieldToFilter('entity_id', ['in' => $ids])
+                ;
+            }
         } catch (Exception $e) {
             $this->getDefaultHelper()->log('Advanced Search: ' . $e->getMessage());
         }
