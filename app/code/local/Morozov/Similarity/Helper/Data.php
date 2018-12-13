@@ -50,6 +50,12 @@ class Morozov_Similarity_Helper_Data extends Mage_Core_Helper_Abstract
         return Mage::getStoreConfig(self::PATH_TIMEOUT, $this->getStoreId());
     }
 
+    public function getTimeoutSec()
+    {
+        $to = (float)(((int)$this->getTimeout()) / 1000.0);
+        return $to;
+    }
+
     public function getCronEnabled()
     {
         return Mage::getStoreConfigFlag(self::PATH_CRON_ENABLED, $this->getStoreId());

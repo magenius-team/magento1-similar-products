@@ -13,7 +13,17 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
     public function getUpSells($productId)
     {
         $url = $this->getDefaultHelper()->getUrl() . sprintf(self::PATH_GET_UPSELLS, $productId);
-        if (!$response = @file_get_contents($url)) {
+        $ctxParams = [];
+        $toSec = $this->getDefaultHelper()->getTimeoutSec();
+        if ($toSec > 0.0) {
+            $ctxParams = [
+                'http' => [
+                    'timeout' => $toSec,  // In seconds (float), example 0.2, 0.5...
+                ]
+            ];
+        }
+        $ctx = stream_context_create($ctxParams);
+        if (!$response = @file_get_contents($url, false, $ctx)) {
             throw new Exception($url . ' empty response');
             //return [];
         }
