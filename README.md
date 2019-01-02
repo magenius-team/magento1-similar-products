@@ -4,7 +4,7 @@ Magento 1.x extension which provides block with really similar products.
 ## Installation
 Simple installation via composer.
 ```
-compose install morozov-group/magento1-similar-products
+composer require morozov-group/magento1-similar-products
 ```
 Go to configuration enter your email, and we'll take care of everything else.
 
