@@ -1,6 +1,7 @@
 <?php
 class Morozov_Similarity_Model_Rewrite_CatalogProduct extends Morozov_Similarity_Model_Product
 {
+    /*
     // override parent
     public function getUpSellProductCollection()
     {
@@ -20,4 +21,5 @@ class Morozov_Similarity_Model_Rewrite_CatalogProduct extends Morozov_Similarity
 
         return parent::getUpSellProductCollection();
     }
+    */
 }

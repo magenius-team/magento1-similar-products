@@ -3,6 +3,7 @@ class Morozov_Similarity_Model_Resource_UpSellProductCollection extends Mage_Cat
 {
     public function setPositionOrder()
     {
+        /*
         if (Mage::helper('morozov_similarity')->canUse()) {
             $where = $this->getSelect()->getPart(Zend_Db_Select::WHERE);
             foreach($where as &$w) {
@@ -13,6 +14,7 @@ class Morozov_Similarity_Model_Resource_UpSellProductCollection extends Mage_Cat
                 }
             }
         }
+        */
         return $this;
     }
 
