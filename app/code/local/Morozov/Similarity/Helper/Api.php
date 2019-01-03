@@ -23,7 +23,8 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
             ];
         }
         $ctx = stream_context_create($ctxParams);
-        if (!$response = @file_get_contents($url, false, $ctx)) {
+        $response = file_get_contents($url, false, $ctx);
+        if (!$response) {
             throw new Exception($url . ' empty response');
             //return [];
         }
