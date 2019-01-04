@@ -27,7 +27,7 @@ extends Mage_Catalog_Block_Product_List_Upsell
         }
 
         if ($this->getDefaultHelper()->canUse()) {
-            $this->_itemCollection->setPageSize($this->getDefaultHelper()->getUpSellMaxCount());
+            $this->adjustItemCollection($this->_itemCollection);
         }
 
         $this->_itemCollection->load();
@@ -67,14 +67,16 @@ extends Mage_Catalog_Block_Product_List_Upsell
         return $product->getUpSellProductCollection();
     }
 
-    protected function getSimilarProductCollection($ids)
+    protected function adjustItemCollection($collection)
     {
-        $collection = Mage::getResourceModel('morozov_similarity/upSellProductCollection')
-            ->addFieldToFilter('entity_id', ['in' => $ids])
-        ;
-        $orderIds = implode(',', $ids);
-        $collection->getSelect()->order(new Zend_Db_Expr("FIELD(e.entity_id, $orderIds)"));
-        return $collection;
+        // Begin Compatibility with Enterprise Edition
+        $orderPart = $collection->getSelect()->getPart(Zend_Db_Select::ORDER);
+        $orderPart = array_filter($orderPart, function ($f) {
+            return !is_array($f);
+        });
+        $collection->getSelect()->setPart(Zend_Db_Select::ORDER, $orderPart);
+        // End Compatibility with Enterprise Edition
+        $collection->setPageSize($this->getDefaultHelper()->getUpSellMaxCount());
     }
 
     protected function getDefaultHelper()
