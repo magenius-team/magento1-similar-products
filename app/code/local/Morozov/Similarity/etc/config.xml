@@ -157,6 +157,15 @@
                     </morozov_similarity_catalog_product_collection_load_before>
                 </observers>
             </catalog_product_collection_load_before>
+            <catalog_product_collection_load_after>
+                <observers>
+                    <morozov_similarity_catalog_product_collection_load_after>
+                        <type>singleton</type>
+                        <class>morozov_similarity/observer_collection</class>
+                        <method>onCatalogProductCollectionLoadAfter</method>
+                    </morozov_similarity_catalog_product_collection_load_after>
+                </observers>
+            </catalog_product_collection_load_after>
             <!--
             <catalog_block_product_list_collection>
                 <observers>

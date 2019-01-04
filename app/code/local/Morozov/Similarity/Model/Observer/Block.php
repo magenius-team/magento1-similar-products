@@ -8,16 +8,19 @@ class Morozov_Similarity_Model_Observer_Block
             if ($block->getParentBlock() instanceof  Mage_Catalog_Block_Category_View) {
                 // is not working for filtering products within a category..
             }
+
             if ($similar = $this->getRequestHelper()->getSimilar()) {
                 try {
                     if ($ids = @$this->getApiHelper()->getUpSells((int)$similar)) {
+                        $this->setSortByForCategory($block);
                         $block->getLoadedProductCollection()->addFieldToFilter('entity_id', ['in' => $ids]);
-                        return;
+                        if ($toolbar = $block->getToolbarBlock()) {
+                            $toolbar->setCollection($block->getLoadedProductCollection());
+                        }
                     }
                 } catch (Exception $e) {
                     $this->getDefaultHelper()->log('Category: ' . $e->getMessage());
                 }
-                $block->getLoadedProductCollection()->addFieldToFilter('entity_id', null);
             }
         }
     }
@@ -66,6 +69,36 @@ class Morozov_Similarity_Model_Observer_Block
     {
         $res = $block instanceof Mage_CatalogSearch_Block_Advanced_Form;
         return $res;
+    }
+
+    protected function setSortByForCategory($productListBlock)
+    {
+        if ($productListBlock->getParentBlock()) {
+            if ($category = $productListBlock->getParentBlock()->getCurrentCategory()) {
+                $sortBy = $category->getAvailableSortByOptions();
+                $sortBy[$this->getRequestHelper()->getSimilarVarName()] = $this->getRequestHelper()->getSimilarLabel();
+                $productListBlock->setAvailableOrders($sortBy);
+                if ($toolbar = $productListBlock->getToolbarBlock()) {
+                    $toolbar->setAvailableOrders($sortBy);
+
+                    if (!Mage::getSingleton('catalog/session')->getData('sort_order')) {
+                        $productListBlock
+                            ->setSortBy($this->getRequestHelper()->getSimilarVarName())
+                            //->setDefaultDirection('desc')
+                        ;
+                        //$toolbar->setDefaultOrder($this->getRequestHelper()->getSimilarVarName());
+                        //$toolbar->setDefaultDirection('asc');
+
+                        //Mage::getSingleton('catalog/session')
+                        //    ->setData('sort_order', $this->getRequestHelper()->getSimilarVarName())
+                        //    ->setData('sort_direction', 'asc')
+                        //;
+                        $toolbar->setData('_current_grid_order', $this->getRequestHelper()->getSimilarVarName());
+                        //$toolbar->setData('_current_grid_direction', 'desc');
+                    }
+                }
+            }
+        }
     }
 
     protected function getDefaultHelper()
