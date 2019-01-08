@@ -12,10 +12,13 @@ class Morozov_Similarity_Model_Observer_Block
             if ($similar = $this->getRequestHelper()->getSimilar()) {
                 try {
                     if ($ids = @$this->getApiHelper()->getUpSells((int)$similar)) {
-                        $this->setSortByForCategory($block);
                         $block->getLoadedProductCollection()->addFieldToFilter('entity_id', ['in' => $ids]);
-                        if ($toolbar = $block->getToolbarBlock()) {
-                            $toolbar->setCollection($block->getLoadedProductCollection());
+
+                        if ($this->getDefaultHelper()->getCustomSortByForCategoryEnabled()) {
+                            $this->setSortByForCategory($block);
+                            if ($toolbar = $block->getToolbarBlock()) {
+                                $toolbar->setCollection($block->getLoadedProductCollection());
+                            }
                         }
                     }
                 } catch (Exception $e) {

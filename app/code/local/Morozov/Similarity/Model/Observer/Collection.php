@@ -15,6 +15,10 @@ class Morozov_Similarity_Model_Observer_Collection
         $collection = $observer->getEvent()->getCollection();
         if ($this->detectCatalogProductCollection($collection)) {
             if ($similar = $this->getRequestHelper()->getSimilar()) {
+                if (!$this->getDefaultHelper()->getCustomSortByForCategoryEnabled()) {
+                    return;
+                }
+
                 try {
                     if ($ids = @$this->getApiHelper()->getUpSells((int)$similar)) {
                     //if ($ids = [30934, 31437, 31487]) {

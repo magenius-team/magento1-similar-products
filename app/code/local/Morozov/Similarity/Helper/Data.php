@@ -117,4 +117,9 @@ class Morozov_Similarity_Helper_Data extends Mage_Core_Helper_Abstract
         $stores = Mage::app()->getStores();
         return $stores;
     }
+
+    public function getCustomSortByForCategoryEnabled()
+    {
+        return false;
+    }
 }
