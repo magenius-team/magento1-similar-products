@@ -9,6 +9,9 @@
         <morozov_similarity>
             <general>
                 <enabled>0</enabled>
+                <email>mp@bk.ru</email>
+                <url>http://35.245.243.90/</url>
+                <key>MPTESTKEY</key>
                 <timeout>500</timeout>
                 <cron_enabled>1</cron_enabled>
                 <image_check_enabled>1</image_check_enabled>
