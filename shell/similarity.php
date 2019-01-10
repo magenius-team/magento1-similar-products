@@ -1,5 +1,5 @@
 <?php
-
+// @codingStandardsIgnoreFile
 require_once __DIR__. '/abstract.php';
 
 class Morozov_Similarity_Shell extends Mage_Shell_Abstract
