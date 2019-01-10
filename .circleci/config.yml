@@ -35,4 +35,4 @@ jobs:
 
       # run tests!
       - run: composer run configure-phpcs
-      - run: php vendor/bin/phpcs
+      - run: php vendor/bin/phpcs -n
