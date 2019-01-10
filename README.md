@@ -1,4 +1,6 @@
 # magento1-similar-products
+[![CircleCI](https://circleci.com/gh/morozov-group/magento1-similar-products/tree/master.svg?style=svg&circle-token=037649b5ce048e3968799d5a9758464a674922c9)](https://circleci.com/gh/morozov-group/magento1-similar-products/tree/master)
+
 Magento 1.x Similarity extension which provides connectivity with [Similarity Engine](https://morozov.group/en/similarity).
 
 1. Automated Upsells for every product
