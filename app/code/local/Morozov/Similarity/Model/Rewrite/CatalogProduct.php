@@ -1,4 +1,7 @@
 <?php
+// @codingStandardsIgnoreFile
+
+
 class Morozov_Similarity_Model_Rewrite_CatalogProduct extends Morozov_Similarity_Model_Product
 {
     /*

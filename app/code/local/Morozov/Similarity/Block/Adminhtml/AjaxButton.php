@@ -1,6 +1,7 @@
 <?php
+
 class Morozov_Similarity_Block_Adminhtml_AjaxButton
-extends Mage_Adminhtml_Block_System_Config_System_Storage_Media_Synchronize
+    extends Mage_Adminhtml_Block_System_Config_System_Storage_Media_Synchronize
 {
     protected $_uniqId = 'ajaxbutton';
 
@@ -8,7 +9,7 @@ extends Mage_Adminhtml_Block_System_Config_System_Storage_Media_Synchronize
 
     protected function _construct()
     {
-        //parent::_construct();
+        parent::_construct();
         $this->setTemplate(null);
     }
 
@@ -29,20 +30,23 @@ extends Mage_Adminhtml_Block_System_Config_System_Storage_Media_Synchronize
 
     public function getAjaxSyncUrl()
     {
-        //@TODO: paste your URL here
         return Mage::getSingleton('adminhtml/url')->getUrl('*/*/*');
     }
 
     public function getButtonHtml()
     {
-        $button = $this->getLayout()->createBlock('adminhtml/widget_button')
-            ->setData(array(
-                'id'        => $this->getUniqId(),
-                'label'     => $this->getLabel(),
-                'class'     => 'save',
-                'onclick'   => "{$this->getJsMethod()}(); return false;"
-            ))
-        ;
+        $button = $this
+            ->getLayout()
+            ->createBlock('adminhtml/widget_button')
+            ->setData(
+                array(
+                    'id' => $this->getUniqId(),
+                    'label' => $this->getLabel(),
+                    'class' => 'save',
+                    'onclick' => "{$this->getJsMethod()}(); return false;"
+                )
+            );
+
         return $button->toHtml();
     }
 

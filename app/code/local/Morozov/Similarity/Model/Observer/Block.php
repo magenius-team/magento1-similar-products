@@ -7,6 +7,7 @@ class Morozov_Similarity_Model_Observer_Block
         if ($this->detectCatalogProductList($block) && $this->detectCategoryViewPage()) {
             if ($block->getParentBlock() instanceof  Mage_Catalog_Block_Category_View) {
                 // is not working for filtering products within a category..
+                $i=1;
             }
 
             if ($similar = $this->getRequestHelper()->getSimilar()) {

@@ -1,16 +1,16 @@
 <?php
+
 class Morozov_Similarity_Block_Rewrite_CatalogProductListUpsell
-extends Mage_Catalog_Block_Product_List_Upsell
+    extends Mage_Catalog_Block_Product_List_Upsell
 {
     protected function _prepareData()
     {
         $product = Mage::registry('product');
-        /* @var $product Mage_Catalog_Model_Product */
 
+        /* @var $product Mage_Catalog_Model_Product */
         $this->_itemCollection = $this->getUpsellProductCollection($product)
             ->setPositionOrder()
-            ->addStoreFilter()
-        ;
+            ->addStoreFilter();
 
         if (Mage::helper('catalog')->isModuleEnabled('Mage_Checkout')) {
             Mage::getResourceSingleton('checkout/cart')->addExcludeProductFilter($this->_itemCollection,
@@ -36,9 +36,9 @@ extends Mage_Catalog_Block_Product_List_Upsell
          * Updating collection with desired items
          */
         Mage::dispatchEvent('catalog_product_upsell', array(
-            'product'       => $product,
-            'collection'    => $this->_itemCollection,
-            'limit'         => $this->getItemLimit()
+            'product' => $product,
+            'collection' => $this->_itemCollection,
+            'limit' => $this->getItemLimit()
         ));
 
         foreach ($this->_itemCollection as $product) {
@@ -52,10 +52,9 @@ extends Mage_Catalog_Block_Product_List_Upsell
     {
         if ($this->getDefaultHelper()->canUse()) {
             try {
-                if ($ids = $this->getApiHelper()->getUpSells($product->getEntityId()) ) {
+                if ($ids = $this->getApiHelper()->getUpSells($product->getEntityId())) {
                     $collection = Mage::getResourceModel('morozov_similarity/upSellProductCollection')
-                        ->addFieldToFilter('entity_id', ['in' => $ids])
-                    ;
+                        ->addFieldToFilter('entity_id', ['in' => $ids]);
                     $orderIds = implode(',', $ids);
                     $collection->getSelect()->order(new Zend_Db_Expr("FIELD(e.entity_id, $orderIds)"));
                     return $collection;

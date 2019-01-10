@@ -12,15 +12,11 @@ class Morozov_Similarity_Helper_Router extends Mage_Core_Helper_Abstract
         return null;
     }
 
-    public function getUrlByProductId()
-    {
-
-    }
 
     protected function getUrlKey($url)
     {
         preg_match_all("/\/([^\/]+)\.html/i", $url, $matches);
-        $urlKey = @$matches[1][0];
+        $urlKey = $matches[1][0];
         return $urlKey;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+// @codingStandardsIgnoreFile
 /**
  * Fixing rewrite conflict with MDN_AdvancedStock
  */
