@@ -21,6 +21,11 @@
             "vendor/bin/phpcs --config-set default_standard MEQP1",
             "vendor/bin/phpcs --config-set installed_paths \"$(pwd)/vendor/magento/marketplace-eqp\"",
             "vendor/bin/phpcs --config-set php5.5_path \"$(which php)\""
+        ],
+        "configure-phpcs": [
+            "vendor/bin/phpcs --config-set default_standard MEQP1",
+            "vendor/bin/phpcs --config-set installed_paths \"$(pwd)/vendor/magento/marketplace-eqp\"",
+            "vendor/bin/phpcs --config-set php5.5_path \"$(which php)\""
         ]
     },
     "extra": {

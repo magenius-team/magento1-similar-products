@@ -34,7 +34,5 @@ jobs:
           key: v1-dependencies-{{ checksum "composer.json" }}
 
       # run tests!
-      - run: php vendor/bin/phpcs --config-set default_standard MEQP1
-      - run: php vendor/bin/phpcs --config-set installed_paths "$(pwd)/vendor/magento/marketplace-eqp"
-      - run: php vendor/bin/phpcs --config-set php5.5_path "$(which php)"
+      - run: composer run configure-phpcs
       - run: php vendor/bin/phpcs ./app ./shell --standard=MEQP1 -n
