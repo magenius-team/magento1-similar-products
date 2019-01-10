@@ -2,9 +2,9 @@
 class Morozov_Similarity_Block_Adminhtml_AjaxButton
 extends Mage_Adminhtml_Block_System_Config_System_Storage_Media_Synchronize
 {
-    protected $uniqId = 'ajaxbutton';
+    protected $_uniqId = 'ajaxbutton';
 
-    protected $label = 'Button Label';
+    protected $_label = 'Button Label';
 
     protected function _construct()
     {
@@ -14,12 +14,12 @@ extends Mage_Adminhtml_Block_System_Config_System_Storage_Media_Synchronize
 
     protected function getUniqId()
     {
-        return $this->uniqId;
+        return $this->_uniqId;
     }
 
     protected function getLabel()
     {
-        return $this->label;
+        return $this->_label;
     }
 
     protected function getJsMethod()

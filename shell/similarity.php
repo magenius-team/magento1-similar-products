@@ -1,5 +1,6 @@
 <?php
-require_once 'abstract.php';
+// @codingStandardsIgnoreFile
+require_once __DIR__. '/abstract.php';
 
 class Morozov_Similarity_Shell extends Mage_Shell_Abstract
 {
@@ -41,6 +42,8 @@ class Morozov_Similarity_Shell extends Mage_Shell_Abstract
         } else {
             echo $this->usageHelp();
         }
+
+        echo "\r\n";
     }
 
     /**

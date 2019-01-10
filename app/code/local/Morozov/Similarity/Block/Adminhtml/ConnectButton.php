@@ -2,9 +2,9 @@
 class Morozov_Similarity_Block_Adminhtml_ConnectButton
 extends Morozov_Similarity_Block_Adminhtml_AjaxButton
 {
-    protected $uniqId = 'connectbutton';
+    protected $_uniqId = 'connectbutton';
 
-    protected $label = 'Connect';
+    protected $_label = 'Connect';
 
     public function getAjaxSyncUrl()
     {
