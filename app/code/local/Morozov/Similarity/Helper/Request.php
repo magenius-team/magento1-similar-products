@@ -27,6 +27,7 @@ class Morozov_Similarity_Helper_Request extends Mage_Core_Helper_Abstract
         if ($value) {
             $input = '<input type="hidden" name="' . $this->getSimilarVarName() . '" value="' . $value . '"/>';
         }
+
         return $input;
     }
 }

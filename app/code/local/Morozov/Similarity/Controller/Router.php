@@ -8,8 +8,7 @@ class Morozov_Similarity_Controller_Router extends Mage_Core_Controller_Varien_R
         if (!Mage::isInstalled()) {
             Mage::app()->getFrontController()->getResponse()
                 ->setRedirect(Mage::getUrl('install'))
-                ->sendResponse()
-            ;
+                ->sendResponse();
             return false;
         }
 
@@ -22,10 +21,10 @@ class Morozov_Similarity_Controller_Router extends Mage_Core_Controller_Varien_R
                 $request
                     ->setModuleName('catalogsearch')
                     ->setControllerName('advanced')
-                    ->setActionName('result')
-                ;
+                    ->setActionName('result');
                 $request
-                    ->setQuery([
+                    ->setQuery(
+                        array(
                         'similar' => $productId,
                         // 'order'       => 'name',
                         // 'dir'         => 'asc',
@@ -34,8 +33,8 @@ class Morozov_Similarity_Controller_Router extends Mage_Core_Controller_Varien_R
                         // 'sku'         => 'xxxxx',
                         // 'price[from]' => '10',
                         // 'price[to]'   => '100',
-                    ])
-                ;
+                        )
+                    );
                 return true;
             } else {
                 $this->getDefaultHelper()->log('Router: failed to load Product by URL ' . $request->getPathInfo());

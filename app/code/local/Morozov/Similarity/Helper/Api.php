@@ -13,29 +13,32 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
     public function getUpSells($productId)
     {
         $url = $this->getDefaultHelper()->getUrl() . sprintf(self::PATH_GET_UPSELLS, $productId);
-        $ctxParams = [];
+        $ctxParams = array();
         $toSec = $this->getDefaultHelper()->getTimeoutSec();
         if ($toSec > 0.0) {
-            $ctxParams = [
-                'http' => [
+            $ctxParams = array(
+                'http' => array(
                     'timeout' => $toSec,  // In seconds (float), example 0.2, 0.5...
-                ]
-            ];
+                )
+            );
         }
+
         $ctx = stream_context_create($ctxParams);
         $response = file_get_contents($url, false, $ctx);
         if (!$response) {
             throw new Exception($url . ' empty response');
             //return [];
         }
+
         $response = str_replace("NaN", '"NaN"', $response);
         $items = Zend_Json::decode($response);  // error
-        $tempArr = [];
+        $tempArr = array();
         foreach ($items as $item) {
             if ($item[1] > 0.0000001) {
                 $tempArr[$item[0][0]['entity_id']] = $item[0][0]['image'] . $item[1];
             }
         }
+
         $ids = array_keys(array_unique($tempArr));
         return $ids;
     }
@@ -50,20 +53,22 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
 
         //@TODO: send CSV file to service
         $url = $this->getDefaultHelper()->getUrl() . self::PATH_REINDEX;
-        $data = [
+        $data = array(
             'key' => $this->getDefaultHelper()->getKey(),
             'file' => $this->getDefaultHelper()->getProductsFileUrl()
-        ];
+        );
         $json = Zend_Json::encode($data);
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        curl_setopt(
+            $ch, CURLOPT_HTTPHEADER, array(
             'Content-Type: application/json',
             'Content-Length: ' . strlen($json)
-        ]);
+            )
+        );
         curl_setopt($ch, CURLOPT_NOSIGNAL, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT_MS, (int)$this->getDefaultHelper()->getTimeout());
         $result = curl_exec($ch);
@@ -71,7 +76,7 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
         $info = curl_getinfo($ch);
         $error = curl_errno($ch);
         $this->getDefaultHelper()->log($url);
-        $this->getDefaultHelper()->log($info['http_code'] . ' ' . str_replace(["\n", "\r"], ['', ''], $result));
+        $this->getDefaultHelper()->log($info['http_code'] . ' ' . str_replace(array("\n", "\r"), array('', ''), $result));
         if ($error) {
             $message = curl_error($ch);
             throw new Exception($error . ' ' . $message);
@@ -89,11 +94,13 @@ class Morozov_Similarity_Helper_Api extends Mage_Core_Helper_Abstract
         };
 
         $distances = json_decode($config, true);
-        array_walk($distances, function (&$region, $url) use ($now) {
+        array_walk(
+            $distances, function (&$region, $url) use ($now) {
             $start = $now();
             file_get_contents($region);
             $region = number_format($now() - $start, 6);
-        });
+            }
+        );
 
         asort($distances);
         reset($distances);

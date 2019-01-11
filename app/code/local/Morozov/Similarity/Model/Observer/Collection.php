@@ -26,9 +26,10 @@ class Morozov_Similarity_Model_Observer_Collection
                             self::$lockLoadAfter = false;
                             return;
                         }
+
                         self::$lockLoadAfter = true;
                         $collection->clear();
-                        $collection->addFieldToFilter('entity_id', ['in' => $ids]);
+                        $collection->addFieldToFilter('entity_id', array('in' => $ids));
 
                         $this->setCollectionSort($collection, $ids);
                         return;
@@ -36,6 +37,7 @@ class Morozov_Similarity_Model_Observer_Collection
                 } catch (Exception $e) {
                     $this->getDefaultHelper()->log('Product List: ' . $e->getMessage());
                 }
+
                 $collection->clear();
                 $collection->addFieldToFilter('entity_id', null);
             }
@@ -53,7 +55,7 @@ class Morozov_Similarity_Model_Observer_Collection
         }
 
         if ($this->detectSimilarSort()) {
-            $collection->getSelect()->setPart(Zend_Db_Select::ORDER, []);
+            $collection->getSelect()->setPart(Zend_Db_Select::ORDER, array());
             $ids = ($this->getSortDirection() == 'desc') ? array_reverse($ids) : $ids;
             //$ids = array_reverse($ids);
             $orderIds = implode(',', $ids);

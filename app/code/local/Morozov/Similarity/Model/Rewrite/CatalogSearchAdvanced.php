@@ -15,6 +15,7 @@ class Morozov_Similarity_Model_Rewrite_CatalogSearchAdvanced extends Mage_Catalo
                 throw $e;
             }
         }
+
         return $this;
     }
 
@@ -26,16 +27,16 @@ class Morozov_Similarity_Model_Rewrite_CatalogSearchAdvanced extends Mage_Catalo
 
     protected function addSimilarFilters($similar)
     {
-        $ids = [];
+        $ids = array();
         try {
             if ($ids = @$this->getApiHelper()->getUpSells((int)$similar)) {
                 $this->getProductCollection()
-                    ->addFieldToFilter('entity_id', ['in' => $ids])
-                ;
+                    ->addFieldToFilter('entity_id', array('in' => $ids));
             }
         } catch (Exception $e) {
             $this->getDefaultHelper()->log('Advanced Search: ' . $e->getMessage());
         }
+
         if (!$ids) {
             throw new Mage_Core_Exception("Couldn't get similar products from the service..");
         }

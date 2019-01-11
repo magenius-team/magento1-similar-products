@@ -13,7 +13,7 @@ class Morozov_Similarity_Model_Observer_Block
             if ($similar = $this->getRequestHelper()->getSimilar()) {
                 try {
                     if ($ids = @$this->getApiHelper()->getUpSells((int)$similar)) {
-                        $block->getLoadedProductCollection()->addFieldToFilter('entity_id', ['in' => $ids]);
+                        $block->getLoadedProductCollection()->addFieldToFilter('entity_id', array('in' => $ids));
 
                         if ($this->getDefaultHelper()->getCustomSortByForCategoryEnabled()) {
                             $this->setSortByForCategory($block);
@@ -59,13 +59,14 @@ class Morozov_Similarity_Model_Observer_Block
     protected function injectSimilarFormInput($block, $html)
     {
         if ($similar = $this->getRequestHelper()->getSimilar()) {
-            $url = str_replace(['/'], ['\/'], $block->getSearchPostUrl());
+            $url = str_replace(array('/'), array('\/'), $block->getSearchPostUrl());
             $html = preg_replace(
                 "/(<form(.)+($url)(.)+>)/i",
                 "$1" . $this->getRequestHelper()->getSimilarFormInput($similar),
                 $html
             );
         }
+
         return $html;
     }
 
