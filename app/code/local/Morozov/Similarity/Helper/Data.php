@@ -16,7 +16,7 @@ class Morozov_Similarity_Helper_Data extends Mage_Core_Helper_Abstract
     const EXPORT_DIR    = 'morozov_similarity';
     const PRODUCTS_FILE = 'products.csv';
 
-    protected $storeId;
+    protected $_storeId;
 
     public function log($message)
     {
@@ -35,8 +35,6 @@ class Morozov_Similarity_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function getUrl()
     {
-        //Mage::log('getIsEnabled');
-        //Mage::log($this->storeId);
         return Mage::getStoreConfig(self::PATH_URL, $this->getStoreId());
     }
 
@@ -98,18 +96,19 @@ class Morozov_Similarity_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function getProductsFileUrl()
     {
-        $url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . self::EXPORT_DIR . '/' . $this->getProductsFileName();
+        $url = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) .
+            self::EXPORT_DIR . '/' . $this->getProductsFileName();
         return $url;
     }
 
-    public function setStoreId($storeId)
+    public function setStoreId($_storeId)
     {
-        $this->storeId = $storeId;
+        $this->_storeId = $_storeId;
     }
 
     public function getStoreId()
     {
-        return $this->storeId;
+        return $this->_storeId;
     }
 
     public function getStores()
