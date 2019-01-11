@@ -1,11 +1,10 @@
 <?php
 class Morozov_Similarity_Helper_Sql extends Mage_Core_Helper_Abstract
 {
-    protected $imagesPositionOrder = 'ASC';
+    protected $_imagesPositionOrder = 'ASC';
 
     public function prepareExportProducts($storeId = 0)
     {
-        //$storeId = 3;
         $resource = Mage::getSingleton('core/resource');
         $visibilityAttrId = Mage::getResourceModel('eav/entity_attribute')->getIdByCode('catalog_product', 'visibility');
         $imageAttrId = Mage::getResourceModel('eav/entity_attribute')->getIdByCode('catalog_product', 'image');
@@ -28,7 +27,7 @@ INNER JOIN
 (
    -- SELECT
    --   mg.entity_id AS product_id,
-   --   GROUP_CONCAT(mg.value ORDER BY IFNULL(mgv.position, mgv0.position) {$this->imagesPositionOrder}) AS images
+   --   GROUP_CONCAT(mg.value ORDER BY IFNULL(mgv.position, mgv0.position) {$this->_imagesPositionOrder}) AS images
    -- FROM {$resource->getTableName('catalog_product_entity_media_gallery')} AS mg
    -- INNER JOIN {$resource->getTableName('catalog_product_entity_media_gallery_value')} AS mgv0
    -- ON (mgv0.value_id = mg.value_id) AND (mgv0.store_id = 0) AND (mgv0.disabled <> 1)
